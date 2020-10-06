@@ -1,0 +1,87 @@
+From 3495899261a106c73885120630df522acf2022a4 Mon Sep 17 00:00:00 2001
+From: Samuel Verschelde <stormi@laposte.net>
+Date: Wed, 16 Oct 2019 15:23:59 +0200
+Subject: [PATCH 2/3] Add support for Sangoma Linux (FreePBX), CentOS-based
+
+Based on https://github.com/xenserver/xe-guest-utilities/pull/57
+
+Refs https://github.com/xcp-ng/xcp/issues/243
+---
+ mk/install.sh            |  5 ++++-
+ mk/xe-linux-distribution | 30 ++++++++++++++++++++++++++++++
+ 2 files changed, 34 insertions(+), 1 deletion(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index b1199dc..69183f5 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -138,6 +138,9 @@ select_pkgs_rhel()
+     rhel8|oracle8|centos8|cloudlinux8)
+ 	    # No additional kernel package
+ 	    ;;
++	sangoma*)
++	    # No additional kernel package
++	    ;;
+ 	rhel3|fedora*)
+ 	    # Not officially supported therefore no additional packages required.
+ 	    ;;
+@@ -517,7 +520,7 @@ install_coreos()
+ case "${os_distro}" in
+     rhel|centos|oracle|fedora)         select_pkgs_rhel ;;
+     scientific|neokylin|asianux|turbo) select_pkgs_rhel ;;
+-    cloudlinux)                        select_pkgs_rhel ;;
++    cloudlinux|sangoma)                select_pkgs_rhel ;;
+     sles|"suse linux")                 select_pkgs_sles ;;
+     debian|ubuntu|linx|yinhe|Gooroom)  select_pkgs_debian ;;
+     xe-ddk|xe-sdk)                     select_pkgs_xe ;;
+diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
+index c4d266e..fc9d244 100755
+--- a/mk/xe-linux-distribution
++++ b/mk/xe-linux-distribution
+@@ -361,6 +361,35 @@ identify_asianux()
+     write_to_output "${distro}" "${major}" "${minor}" "$(head -n 1 ${asianux_release})"
+ }
+ 
++identify_sangoma()
++{
++    sangoma_release="$1"
++    local distro
++    local major
++    local minor
++
++    # distro
++    # 'Sangoma Linux (FreePBX)'
++
++    if [ ! -f "${sangoma_release}" ] ; then
++	return 1
++    fi
++
++    eval $(sed -rn \
++              's/^Sangoma Linux release \([0-9]*\)\.\([0-9]*\)\(\.[0-9]*\)\? (.*)/distro=sangoma;major=\1;minor=\2/gp;' \
++              "${sangoma_release}")
++
++    if [ -z "${major}" -o -z "${distro}" ] ; then
++        return 1
++    fi
++
++    if [ -z "${minor}" ] ; then
++        minor=0
++    fi
++
++    write_to_output "${distro}" "${major}" "${minor}" "$(head -n 1 ${sangoma_release})"
++}
++
+ identify_turbo()
+ {
+     turbo_release="$1"
+@@ -524,6 +553,7 @@ if [ -z "${TEST}" ] ; then
+     identify_lsb lsb_release         && exit 0
+     identify_debian /etc/debian_version && exit 0
+     identify_boot2docker /etc/boot2docker && exit 0
++    identify_sangoma /etc/centos-release && exit 0
+ 
+ 
+     if [ $# -eq 1 ] ; then
+-- 
+2.13.7
+

@@ -1,0 +1,140 @@
+From 4410c8e50ad7eaad9eabe0754a61d4025843710a Mon Sep 17 00:00:00 2001
+From: Paco Hope <pacohope@users.noreply.github.com>
+Date: Wed, 17 Jun 2020 09:14:10 -0400
+Subject: [PATCH 3/3] Freebsd support (#1)
+
+add detection and installation for FreeBSD
+
+The tools are installed using FreeBSD's repositories directly, using the `pkg` tool.
+---
+ mk/install.sh            | 31 ++++++++++++++++++++++++++++---
+ mk/xe-linux-distribution | 21 +++++++++++++++++++++
+ 2 files changed, 49 insertions(+), 3 deletions(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index 69183f5..f483679 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -75,7 +75,7 @@ fi
+ 
+ ARCH=$(uname -m | sed -e 's/i.86/i386/g')
+ case "${ARCH}" in
+-    i386|x86_64) ;;
++    i386|x86_64|amd64) ;;
+     *)
+ 	echo "Architecture ${ARCH} is not supported"
+ 	exit 1
+@@ -230,6 +230,21 @@ select_pkgs_xe()
+     select_rpm_utilities
+ }
+ 
++select_pkgs_freebsd()
++{
++    GUEST_PKG_TYPE=pkg
++    PKGNAME=$(pkg info xe-guest-utilities 2>&1)
++    ERROR=$?
++    if [ $ERROR != 0 ]
++    then
++        XGU="xe-guest-utilities"
++    else
++        set $PKGNAME
++        PKGNAME="$1"
++        echo "${PKGNAME} already installed"
++    fi
++}
++
+ update_lvm_configuration_required()
+ {
+     if test "${os_distro}" != rhel
+@@ -517,6 +532,14 @@ install_coreos()
+     systemctl start xe-linux-distribution.service
+ }
+ 
++install_freebsd()
++{
++    echo "Installing xe-guest-utilities from FreeBSD pkg..."
++    pkg install xe-guest-utilities
++    echo "Installation complete. Starting xenguest"
++    service xenguest start
++}
++
+ case "${os_distro}" in
+     rhel|centos|oracle|fedora)         select_pkgs_rhel ;;
+     scientific|neokylin|asianux|turbo) select_pkgs_rhel ;;
+@@ -525,6 +548,7 @@ case "${os_distro}" in
+     debian|ubuntu|linx|yinhe|Gooroom)  select_pkgs_debian ;;
+     xe-ddk|xe-sdk)                     select_pkgs_xe ;;
+     *CoreOS)                            select_pkgs_coreos ;;
++    FreeBSD)                           select_pkgs_freebsd ;;
+     *)                  failure "Unknown Linux distribution \`${os_distro}'." ;;
+ esac
+ 
+@@ -551,7 +575,7 @@ if [ -n "${ECRYPTFS_UTILS}" ] ; then
+ 	fi
+     done
+ fi
+-if [ -n "${XGU}" ] ; then
++if [ -n "${XGU}" ] && [ "${os_distro}" != "FreeBSD" ] ; then
+     for P in ${XGU} ; do
+ 	if [ ! -f "${P}" ] ; then
+ 	    echo "Warning: xe-guest-utilities ${P} not found."
+@@ -559,7 +583,7 @@ if [ -n "${XGU}" ] ; then
+ 	fi
+     done
+ fi
+-if [ -z "${XGU}" ] ; then
++if [ -z "${XGU}" ] && [ "${os_distro}" != "FreeBSD" ] ; then
+     echo ""
+     echo "Certain guest features will not be active until a version of "
+     echo "xe-guest-utilities is installed."
+@@ -677,6 +701,7 @@ case ${GUEST_PKG_TYPE} in
+     rpm) install_rpms ;;
+     deb) install_debs ;;
+     coreos) install_coreos ;;
++    pkg) install_freebsd ;;
+ esac
+ 
+ if [ -n "${KERNEL}" -o -n "${XGU}" ] ; then
+diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
+index fc9d244..dc9fa4a 100755
+--- a/mk/xe-linux-distribution
++++ b/mk/xe-linux-distribution
+@@ -527,7 +527,27 @@ identify_boot2docker()
+     minor=$(awk -F. '{printf("%s.%s", $2, $3)}' /etc/version)
+ 
+     write_to_output "boot2docker" "${major}" "${minor}" "boot2docker $(head -n 1 /etc/version)"
++}
++
++identify_freebsd()
++{
++
++    if [ ! -x /usr/bin/uname ] || [ $(/usr/bin/uname -s) != "FreeBSD" ]
++    then
++        return 1
++    fi
+ 
++    distro="FreeBSD"
++    release=$(uname -r)
++    IFS="-"
++    set - $release
++    version=$1
++    IFS="."
++    set - $version
++    major=$1
++    minor=$2
++    osname="FreeBSD $release"
++    write_to_output "${distro}" "${major}" "${minor}" "${osname}"
+ }
+ 
+ if [ $# -eq 1 ] ; then
+@@ -554,6 +574,7 @@ if [ -z "${TEST}" ] ; then
+     identify_debian /etc/debian_version && exit 0
+     identify_boot2docker /etc/boot2docker && exit 0
+     identify_sangoma /etc/centos-release && exit 0
++    identify_freebsd && exit 0
+ 
+ 
+     if [ $# -eq 1 ] ; then
+-- 
+2.13.7
+

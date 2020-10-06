@@ -1,0 +1,19 @@
+#!/bin/sh
+
+. /etc/xensource-inventory
+IFS=,
+if [ "$(cat /etc/xensource/pool.conf)" != "master" ]; then
+  echo No need to scan rhe tools SR since this is not the master
+  exit 0
+fi
+for pbd in $(xe pbd-list host-uuid=$INSTALLATION_UUID params=uuid --minimal); do
+  for sr in $(xe pbd-list uuid=$pbd params=sr-uuid --minimal); do
+    $(xe sr-param-get uuid=$sr param-name=other-config param-key=xenserver_tools_sr >/dev/null 2>/dev/null)
+    if [ $? -eq 0 ]; then
+      echo $sr is the local tools SR: scanning
+      xe sr-scan uuid=$sr
+      echo Done
+    fi
+  done
+done
+
