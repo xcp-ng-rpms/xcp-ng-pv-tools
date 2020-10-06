@@ -27,6 +27,7 @@ Patch0: LICENSE.patch
 Patch1: 0001-Add-support-for-CloudLinux-which-is-based-on-CentOS.patch
 Patch2: 0002-Add-support-for-Sangoma-Linux-FreePBX-CentOS-based.patch
 Patch3: 0003-Freebsd-support-1.patch
+URL: https://github.com/xcp-ng/xe-guest-utilities
 
 BuildArch: noarch
 BuildRequires: genisoimage
