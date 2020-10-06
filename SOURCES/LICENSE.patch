@@ -1,0 +1,11 @@
+Index: a/LinuxGuestTools-7.20.0-1/LICENSE
+===================================================================
+--- a/LinuxGuestTools-7.20.0-1/LICENSE
++++ b/LinuxGuestTools-7.20.0-1/LICENSE	2020-10-06 12:37:48.568225274 +0200
+@@ -1,3 +1,6 @@
++Derived work by the XCP-ng project,
++based on material from Citrix Systems, Inc., licensed as follows:
++
+ Copyright (C) Citrix Systems, Inc.
+ All rights reserved.
+ 

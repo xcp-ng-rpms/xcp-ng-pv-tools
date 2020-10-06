@@ -6,13 +6,21 @@ Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
 Release: 1%{?dist}
 Summary: ISO with the Linux PV Tools
-License: GPLv2
+# The tools in the ISO are licensed under a BSD-2-clause license
+# The license of the sr_rescan and unmount_xstools.sh scripts is unclear:
+# GPLv2 according to the License tag and description of the xenserver-pv-tools RPM in Citrix Hypervisor 8.1,
+# but that description was already dubious since it said that the Linux PV Tools were GPLv2,
+# when they've actually been under a BSD license for years.
+# To play it safe, we'll consider those two scripts are GPLv2, since they came from a RPM that was under such license.
+# The rest is BSD.
+License: BSD and GPLv2
 Vendor: XCP-ng
 # Until we're ready to build the tools ourselves, we'll extract the linux tools from XenServer's tarball
 Source0: LinuxGuestTools-%{xs_linux_tools_version}-%{xs_linux_tools_release}.tar.gz
 Source1: README.txt
 Source2: sr_rescan
 Source3: unmount_xstools.sh
+Patch0: LICENSE.patch
 # Patches from https://github.com/xcp-ng/xe-guest-utilities
 # Produced by comparing the XS branch with install.sh added from tarball, with ours
 # E.g.: git format-patch 7.20.0-XS_with_install_sh 7.20.0-8.2
