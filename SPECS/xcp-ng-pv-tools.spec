@@ -4,7 +4,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-Release: 1%{?dist}
+Release: 2%{?dist}
 Summary: ISO with the Linux PV Tools
 # The tools in the ISO are licensed under a BSD-2-clause license
 # The license of the sr_rescan and unmount_xstools.sh scripts is unclear:
@@ -79,6 +79,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Mon Oct 12 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-2
+- Fix typo in sr_rescan (rhe => the)
+
 * Mon Oct 05 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-1
 - Update for XCP-ng 8.2.0
 - Change versioning
