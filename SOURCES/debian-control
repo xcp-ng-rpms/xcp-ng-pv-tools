@@ -1,0 +1,15 @@
+Source: xe-guest-utilities
+Section: main/admin
+Priority: optional
+Maintainer: XCP-ng <xcp-ng.org>
+Standards-Version: 3.7.2
+Homepage: https://github.com/xcp-ng/xe-guest-utilities
+
+Package: xe-guest-utilities
+Architecture: any
+Conflicts: xengmond
+Replaces: xengmond
+Description: Virtual Machine Monitoring Scripts
+ Scripts for monitoring Virtual Machines.
+ .
+ Writes distribution version information and IP address to XenStore.

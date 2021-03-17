@@ -1,0 +1,33 @@
+From bea5c5bf164f5b3092f157998ef3e0fc09f33e2f Mon Sep 17 00:00:00 2001
+From: Samuel Verschelde <stormi-xcp@ylix.fr>
+Date: Fri, 5 Feb 2021 18:54:04 +0100
+Subject: [PATCH 4/4] Backport: Fix name of tarball based on GOARCH
+
+If the GOARCH environment variable is defined, use it as the arch
+for the name of the tarball produced in build/dist/
+
+Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
+---
+ Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 3adfd73..2b889a5 100644
+--- a/Makefile
++++ b/Makefile
+@@ -21,7 +21,11 @@ OBJECTS += $(OBJECTDIR)/xenstore
+ PACKAGE = xe-guest-utilities
+ VERSION = $(PRODUCT_VERSION)
+ RELEASE := $(shell git rev-list HEAD | wc -l)
+-ARCH := $(shell go version|awk -F'/' '{print $$2}')
++ifeq ($(GOARCH),)
++        ARCH := $(shell go version|awk -F'/' '{print $$2}')
++else
++        ARCH := $(GOARCH)
++endif
+ 
+ ifeq ($(ARCH), amd64)
+ 	ARCH = x86_64
+-- 
+2.30.0
+

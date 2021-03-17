@@ -1,0 +1,5 @@
+xe-guest-utilities (@VERSION_RELEASE@) etch; urgency=low
+
+  * Build for XCP-ng @XCPNG_VERSION@.
+
+ -- XCP-ng <xcp-ng.org>  @DATE@
