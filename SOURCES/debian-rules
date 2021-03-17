@@ -1,0 +1,51 @@
+#!/usr/bin/make -f
+
+build: build-stamp
+build-stamp:
+	touch $@
+
+clean:
+	-rm -f debian/files
+
+binary: binary-arch binary-indep
+
+binary-arch: DESTDIR=debian/tmp
+binary-arch: build
+	-rm -rf $(DESTDIR)
+	install -d $(DESTDIR)/etc/init.d/
+	install -d $(DESTDIR)/lib/udev/rules.d/
+	install -d $(DESTDIR)/usr/bin/
+	install -d $(DESTDIR)/usr/sbin/
+	install -d $(DESTDIR)/usr/share/doc/xe-guest-utilities
+
+	install -m 755 xe-linux-distribution $(DESTDIR)/usr/sbin/
+	install -m 755 xenstore $(DESTDIR)/usr/bin/xenstore
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-read
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-write
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-exists
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-rm
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-list
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-ls
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-chmod
+	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-watch
+	
+	install -m 755 xe-daemon $(DESTDIR)/usr/sbin/xe-daemon
+	
+	install -m 644 xen-vcpu-hotplug.rules $(DESTDIR)/lib/udev/rules.d/z10_xen-vcpu-hotplug.rules
+
+	install -m 755 xe-linux-distribution.init $(DESTDIR)/etc/init.d/xe-linux-distribution
+	install -m 644 LICENSE $(DESTDIR)/usr/share/doc/xe-guest-utilities/LICENSE
+
+	strip $(DESTDIR)/usr/bin/xenstore
+	strip $(DESTDIR)/usr/sbin/xe-daemon
+
+	mkdir -p $(DESTDIR)/DEBIAN
+	(cd $(DESTDIR); find ./etc -type f | sed s,.,,) > $(DESTDIR)/DEBIAN/conffiles
+	(cd $(DESTDIR); find lib usr -type f -print0 | xargs -0 md5sum) > $(DESTDIR)/DEBIAN/md5sums
+	cp debian/postinst debian/postrm debian/prerm $(DESTDIR)/DEBIAN/
+	dpkg-gencontrol
+	chown -R root.root $(DESTDIR)
+	chmod -R go=rX $(DESTDIR)
+	dpkg-deb -Zgzip --build $(DESTDIR) ..
+
+binary-indep:

@@ -1,11 +1,22 @@
-%define xs_linux_tools_version 7.20.0
-%define xs_linux_tools_release 1
+# xgu stands for xe-guest-utilities
+%define xgu_major 7
+%define xgu_minor 20
+%define xgu_micro 0
+%define xgu_version %{xgu_major}.%{xgu_minor}.%{xgu_micro}
+
+# xcp-ng-pv-tools is versioned after the release of XCP-ng it was made for
 %define xcp_ng_release 8.2.0
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-Release: 2%{?dist}
+%define _release 3
+Release: %{_release}%{?dist}
+
+# The xe-guest-utilities release is the xcp-ng-pv-tools release
+%define xgu_release %{_release}
+
 Summary: ISO with the Linux PV Tools
+
 # The tools in the ISO are licensed under a BSD-2-clause license
 # The license of the sr_rescan and unmount_xstools.sh scripts is unclear:
 # GPLv2 according to the License tag and description of the xenserver-pv-tools RPM in Citrix Hypervisor 8.1,
@@ -14,23 +25,41 @@ Summary: ISO with the Linux PV Tools
 # To play it safe, we'll consider those two scripts are GPLv2, since they came from a RPM that was under such license.
 # The rest is BSD.
 License: BSD and GPLv2
-Vendor: XCP-ng
-# Until we're ready to build the tools ourselves, we'll extract the linux tools from XenServer's tarball
-Source0: LinuxGuestTools-%{xs_linux_tools_version}-%{xs_linux_tools_release}.tar.gz
+URL: https://github.com/xcp-ng/xe-guest-utilities
+
+# We want an archive that matches upstream tag, but with install.sh included.
+# Tarball created from https://github.com/xcp-ng/xe-guest-utilities with command:
+# git archive $XGUVERSION-XS_with_install_sh --prefix=xe-guest-utilities-$XGUVERSION/ --format tar.gz -o xe-guest-utilities-$XGUVERSION-with_install_sh.tar.gz
+# When upstream will finally add install.sh to their repo, then this will become simpler
+Source0: xe-guest-utilities-%{xgu_version}-with_install_sh.tar.gz
 Source1: README.txt
 Source2: sr_rescan
 Source3: unmount_xstools.sh
+Source4: xe-guest-utilities.spec
+Source10: debian-changelog
+Source11: debian-compat
+Source12: debian-control
+Source13: debian-copyright
+Source14: debian-postinst
+Source15: debian-postrm
+Source16: debian-prerm
+Source17: debian-rules
 Patch0: LICENSE.patch
-# Patches from https://github.com/xcp-ng/xe-guest-utilities
-# Produced by comparing the XS branch with install.sh added from tarball, with ours
-# E.g.: git format-patch 7.20.0-XS_with_install_sh 7.20.0-8.2
+
+# Additional patches, created from the maintenance branch (e.g. 7.20.0-8.2)
+# Example creation command:
+# git format-patch 7.20.0-XS_with_install_sh..7.20.0-8.2
 Patch1: 0001-Add-support-for-CloudLinux-which-is-based-on-CentOS.patch
 Patch2: 0002-Add-support-for-Sangoma-Linux-FreePBX-CentOS-based.patch
 Patch3: 0003-Freebsd-support-1.patch
-URL: https://github.com/xcp-ng/xe-guest-utilities
+Patch4: 0004-Backport-Fix-name-of-tarball-based-on-GOARCH.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
+BuildRequires: golang
+BuildRequires: golang-github-golang-sys-devel
+BuildRequires: dpkg-dev
+BuildRequires: fakeroot
 
 Provides: xenserver-pv-tools
 Obsoletes: xenserver-pv-tools
@@ -41,19 +70,114 @@ Obsoletes: xenserver-pv-tools
 ISO with the Linux PV Tools
 
 %prep
-%autosetup -p2 -n LinuxGuestTools-%{xs_linux_tools_version}-%{xs_linux_tools_release}
-rm *.orig -f
+%autosetup -p1 -n xe-guest-utilities-%{xgu_version}
 
 %build
-install -d iso
-install -m 0755 %{SOURCE1} iso/README.txt
-install -d iso/Linux
-rm -f README.txt
-find . -maxdepth 1 -type f -exec mv {} iso/Linux/ \;
-pushd iso/Linux
-chmod 644 *
-chmod a+x install.sh xe-daemon xe-linux-distribution
-popd
+# *** Functions ***
+function build_and_copy_rpm {
+    ARCH=$1
+    mkdir -p rpmbuild-$ARCH
+    pushd rpmbuild-$ARCH
+    mkdir SPECS SOURCES
+    cp %{SOURCE4} SPECS/
+    cp ../build/obj/{xe-daemon,xenstore} SOURCES/
+    cp ../LICENSE SOURCES/
+    cp ../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} SOURCES/
+    # _rpmfilename redefined to be independent from the build environment definition
+    rpmbuild --target $ARCH \
+        -bb SPECS/xe-guest-utilities.spec \
+        --define "_topdir $(pwd)" \
+        --define "xgu_version %{xgu_version}" \
+        --define "xgu_release %{xgu_release}" \
+        --define "changelogdate $(LC_ALL=C date +'%a %b %d %Y')" \
+        --define "_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm"
+    popd
+
+    # Copy RPMs
+    install -m 0644 rpmbuild-$ARCH/RPMS/*.rpm iso/Linux/
+    # Two RPMs are produced
+    RPMS=$(cd rpmbuild-$ARCH/RPMS/ && ls *.rpm)
+    echo "XE_GUEST_UTILITIES_PKG_FILE_$ARCH='$(echo $RPMS | tr '\n' ' ')'" >> versions.rpm
+}
+
+function build_and_copy_deb {
+    ARCH=$1
+    mkdir -p debian-$ARCH/xe-guest-utilities-%{xgu_version}/debian
+    pushd debian-$ARCH/xe-guest-utilities-%{xgu_version}
+    cp %{SOURCE10} debian/changelog
+    sed -i debian/changelog -e 's/@VERSION_RELEASE@/%{xgu_version}-%{xgu_release}/'
+    sed -i debian/changelog -e 's/@XCPNG_VERSION@/%{xcp_ng_release}/'
+    sed -i debian/changelog -e "s/@DATE@/$(date -R)/"
+    cp %{SOURCE11} debian/compat
+    cp %{SOURCE12} debian/control
+    cp %{SOURCE13} debian/copyright
+    cp %{SOURCE14} debian/postinst
+    cp %{SOURCE15} debian/postrm
+    cp %{SOURCE16} debian/prerm
+    cp %{SOURCE17} debian/rules
+    cp ../../build/obj/{xe-daemon,xenstore} .
+    cp ../../LICENSE .
+    cp ../../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} .
+    dpkg-buildpackage -us -uc -a $ARCH
+    popd
+
+    # Copy Deb
+    install -m 0644 debian-$ARCH/*.deb iso/Linux/
+    # Only one deb is produced but what follows will work if there are several
+    DEBS=$(cd debian-$ARCH/ && ls *.deb)
+    echo "XE_GUEST_UTILITIES_PKG_FILE_$ARCH='$(echo $DEBS | tr '\n' ' ')'" >> versions.deb
+}
+
+function copy_tgz {
+    ARCH=$1
+    install -m 0644 build/dist/*.tgz iso/Linux/
+    # Only one tgz is produced but what follows will work if there are several
+    TGZS=$(cd build/dist/ && ls *.tgz)
+    echo "XE_GUEST_UTILITIES_PKG_FILE_$ARCH='$(echo $TGZS | tr '\n' ' ')'" >> versions.tgz
+}
+
+# *** Begin ***
+export GOPATH=/usr/share/gocode
+mkdir -p iso/Linux
+touch iso/Linux/versions.rpm
+touch iso/Linux/versions.deb
+touch iso/Linux/versions.tgz
+
+# *** x86_64 build ***
+GOARCH=amd64 make \
+    PRODUCT_MAJOR_VERSION=%{xgu_major} \
+    PRODUCT_MINOR_VERSION=%{xgu_minor} \
+    PRODUCT_MICRO_VERSION=%{xgu_micro} \
+    RELEASE=%{xgu_release}
+
+copy_tgz amd64
+build_and_copy_rpm x86_64
+build_and_copy_deb amd64
+
+# *** i386 build ***
+make clean
+GOARCH=386 make \
+    PRODUCT_MAJOR_VERSION=%{xgu_major} \
+    PRODUCT_MINOR_VERSION=%{xgu_minor} \
+    PRODUCT_MICRO_VERSION=%{xgu_micro} \
+    RELEASE=%{xgu_release}
+
+copy_tgz i386
+# Copy 32 bit xe-daemon binary
+install -m 0755 build/obj/xe-daemon iso/Linux/
+build_and_copy_rpm i386
+build_and_copy_deb i386
+
+# *** Build the ISO ***
+install -m 0644 %{SOURCE1} iso/README.txt
+install -m 0644 versions.tgz versions.rpm versions.deb iso/Linux/
+install -m 0755 mk/install.sh \
+                mk/xe-linux-distribution \
+                mk/xe-linux-distribution.service \
+                mk/xen-vcpu-hotplug.rules \
+                LICENSE \
+                iso/Linux/
+
 genisoimage -joliet -joliet-long -r \
             -A "XCP-ng Tools" \
             -V "XCP-ng Tools" \
@@ -79,6 +203,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Tue Feb 23 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-3
+- Build the binaries and packages contained in the ISO ourselves
+
 * Mon Oct 12 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-2
 - Fix typo in sr_rescan (rhe => the)
 

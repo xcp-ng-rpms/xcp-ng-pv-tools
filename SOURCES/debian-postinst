@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -x "/etc/init.d/xe-linux-distribution" ]; then
+	update-rc.d xe-linux-distribution defaults >/dev/null
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		invoke-rc.d xe-linux-distribution start || exit $?
+	else
+		/etc/init.d/xe-linux-distribution start || exit $?
+	fi
+fi

@@ -1,0 +1,10 @@
+#!/bin/sh
+
+if [ -x "/etc/init.d/xe-linux-distribution" ]; then
+	if [ -x "`which invoke-rc.d 2>/dev/null`" ]; then
+		invoke-rc.d xe-linux-distribution stop || exit $?
+	else
+		/etc/init.d/xe-linux-distribution stop || exit $?
+	fi
+fi
+
