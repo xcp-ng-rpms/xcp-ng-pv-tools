@@ -53,6 +53,8 @@ Patch1: 0001-Add-support-for-CloudLinux-which-is-based-on-CentOS.patch
 Patch2: 0002-Add-support-for-Sangoma-Linux-FreePBX-CentOS-based.patch
 Patch3: 0003-Freebsd-support-1.patch
 Patch4: 0004-Backport-Fix-name-of-tarball-based-on-GOARCH.patch
+Patch5: 0005-Backport-CA-349929-Fix-handling-of-etc-centos-releas.patch
+Patch6: 0006-Backport-Add-CentOS-Stream-to-xe-linux-distribution.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -205,6 +207,8 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 %changelog
 * Tue Feb 23 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-3
 - Build the binaries and packages contained in the ISO ourselves
+- Fix Centos 8.3+ support
+- Add Centos Stream support
 
 * Mon Oct 12 2020 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-2
 - Fix typo in sr_rescan (rhe => the)
