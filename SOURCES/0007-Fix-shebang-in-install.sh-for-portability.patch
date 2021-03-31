@@ -1,0 +1,23 @@
+From 85c0f37e703031be074f30821c364c2785d36043 Mon Sep 17 00:00:00 2001
+From: Samuel Verschelde <stormi@laposte.net>
+Date: Tue, 30 Mar 2021 15:53:24 +0200
+Subject: [PATCH 7/7] Fix shebang in install.sh for portability
+
+Use /usr/bin/env bash for portability
+---
+ mk/install.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index f483679..bd5431e 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -1,4 +1,4 @@
+-#! /bin/bash
++#!/usr/bin/env bash
+ 
+ # Copyright Citrix Systems, Inc.
+ # All rights reserved.
+-- 
+2.30.2
+

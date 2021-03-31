@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 3
+%define _release 4
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -55,6 +55,7 @@ Patch3: 0003-Freebsd-support-1.patch
 Patch4: 0004-Backport-Fix-name-of-tarball-based-on-GOARCH.patch
 Patch5: 0005-Backport-CA-349929-Fix-handling-of-etc-centos-releas.patch
 Patch6: 0006-Backport-Add-CentOS-Stream-to-xe-linux-distribution.patch
+Patch7: 0007-Fix-shebang-in-install.sh-for-portability.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -205,7 +206,10 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
-* Tue Feb 23 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-3
+* Wed Mar 31 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-4
+- Fix shebang of install.sh for better portability
+
+* Mon Mar 22 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-3
 - Build the binaries and packages contained in the ISO ourselves
 - Fix Centos 8.3+ support
 - Add Centos Stream support
