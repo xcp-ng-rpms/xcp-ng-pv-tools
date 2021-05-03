@@ -1,7 +1,7 @@
 From 2ca3b6fd1cec57f332f26af62832d0fd9604e715 Mon Sep 17 00:00:00 2001
 From: Alex Brett <alex.brett@citrix.com>
 Date: Wed, 9 Dec 2020 10:31:47 +0000
-Subject: [PATCH 5/6] Backport: CA-349929: Fix handling of /etc/centos-release
+Subject: [PATCH 5/8] Backport: CA-349929: Fix handling of /etc/centos-release
  for CentOS 8.3+
 
 The format of /etc/centos-release has changed to not include any additional
@@ -28,5 +28,5 @@ index dc9fa4a..ed628a9 100755
                 -e 's/^CloudLinux release \([0-9]*\)\.\([0-9]*\)\(\.[0-9]*\)\? (.*)/distro=cloudlinux;major=\1;minor=\2/gp;' \
                 -e 's/^Enterprise Linux Enterprise Linux .* release \([0-9]*\)\.\([0-9]*\) (.*)$/distro=oracle;major=\1;minor=\2;/gp;' \
 -- 
-2.30.0
+2.30.2
 

@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 4
+%define _release 5
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -56,6 +56,7 @@ Patch4: 0004-Backport-Fix-name-of-tarball-based-on-GOARCH.patch
 Patch5: 0005-Backport-CA-349929-Fix-handling-of-etc-centos-releas.patch
 Patch6: 0006-Backport-Add-CentOS-Stream-to-xe-linux-distribution.patch
 Patch7: 0007-Fix-shebang-in-install.sh-for-portability.patch
+Patch8: 0008-Fix-FreePBX-detection.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -206,6 +207,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Mon May 03 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-5
+- Fix FreePBX detection
+
 * Wed Mar 31 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-4
 - Fix shebang of install.sh for better portability
 

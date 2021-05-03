@@ -1,7 +1,7 @@
 From 9d0bb3bf6590919529cf67609da293766cb00843 Mon Sep 17 00:00:00 2001
 From: W Anders <w@doubleu.codes>
 Date: Fri, 1 Jan 2021 07:51:54 -0600
-Subject: [PATCH 6/6] Backport: Add CentOS Stream to xe-linux-distribution
+Subject: [PATCH 6/8] Backport: Add CentOS Stream to xe-linux-distribution
 
 "CentOS Stream" is specified in /etc/centos-release, along with only the
 major version. Updates the expression in the identify_redhat function to
@@ -31,5 +31,5 @@ index ed628a9..af57bfb 100755
                 -e 's/^CloudLinux release \([0-9]*\)\.\([0-9]*\)\(\.[0-9]*\)\? (.*)/distro=cloudlinux;major=\1;minor=\2/gp;' \
                 -e 's/^Enterprise Linux Enterprise Linux .* release \([0-9]*\)\.\([0-9]*\) (.*)$/distro=oracle;major=\1;minor=\2;/gp;' \
 -- 
-2.30.0
+2.30.2
 
