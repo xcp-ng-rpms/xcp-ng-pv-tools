@@ -1,7 +1,7 @@
 From ec5a6f3b9e92226625bc55ddc66478a69d4f5cdc Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Mon, 3 May 2021 20:26:20 +0200
-Subject: [PATCH 8/8] Fix FreePBX detection
+Subject: [PATCH 08/12] Fix FreePBX detection
 
 The existing regexp fails because it's not an extended regexp
 and since sed is called with -r it must be an extended regexp.

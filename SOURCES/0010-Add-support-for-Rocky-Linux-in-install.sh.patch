@@ -1,0 +1,35 @@
+From d6a58b4fff7c7c688ead00734e2a9c365f30b639 Mon Sep 17 00:00:00 2001
+From: Samuel Verschelde <stormi-xcp@ylix.fr>
+Date: Thu, 6 May 2021 14:01:44 +0200
+Subject: [PATCH 10/12] Add support for Rocky Linux in install.sh
+
+Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
+---
+ mk/install.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index bd5431e..445d180 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -135,7 +135,7 @@ select_pkgs_rhel()
+ 	rhel7|centos7|oracle7|scientific7|neokylin7|cloudlinux7)
+ 	    # No additional kernel package
+ 	    ;;
+-    rhel8|oracle8|centos8|cloudlinux8)
++    rhel8|oracle8|centos8|cloudlinux8|rocky8)
+ 	    # No additional kernel package
+ 	    ;;
+ 	sangoma*)
+@@ -541,7 +541,7 @@ install_freebsd()
+ }
+ 
+ case "${os_distro}" in
+-    rhel|centos|oracle|fedora)         select_pkgs_rhel ;;
++    rhel|centos|oracle|fedora|rocky)   select_pkgs_rhel ;;
+     scientific|neokylin|asianux|turbo) select_pkgs_rhel ;;
+     cloudlinux|sangoma)                select_pkgs_rhel ;;
+     sles|"suse linux")                 select_pkgs_sles ;;
+-- 
+2.30.2
+

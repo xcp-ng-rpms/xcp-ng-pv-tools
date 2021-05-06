@@ -1,7 +1,7 @@
 From bea5c5bf164f5b3092f157998ef3e0fc09f33e2f Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Fri, 5 Feb 2021 18:54:04 +0100
-Subject: [PATCH 4/8] Backport: Fix name of tarball based on GOARCH
+Subject: [PATCH 04/12] Backport: Fix name of tarball based on GOARCH
 
 If the GOARCH environment variable is defined, use it as the arch
 for the name of the tarball produced in build/dist/

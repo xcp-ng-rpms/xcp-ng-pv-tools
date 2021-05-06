@@ -1,7 +1,7 @@
 From 9530a611d40d4682584b0b625e026a72b80cfd95 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi@laposte.net>
 Date: Tue, 30 Mar 2021 15:53:24 +0200
-Subject: [PATCH 7/8] Fix shebang in install.sh for portability
+Subject: [PATCH 07/12] Fix shebang in install.sh for portability
 
 Use /usr/bin/env bash for portability
 ---

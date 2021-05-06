@@ -1,0 +1,46 @@
+From fbd96b7bfa6f90ebdacfb698f1983020d18733e4 Mon Sep 17 00:00:00 2001
+From: Robert Scheck <robert@fedoraproject.org>
+Date: Sun, 2 May 2021 19:48:02 +0200
+Subject: [PATCH 09/12] Support for Rocky Linux distribution
+
+[Additional comment from Samuel Verschelde, not present in the original commit]
+this commit was cherry-picked from commit 37cfe6dde3f10eeb0eb95ab042377d1fa97e9ecc,
+and a few conflicts solved.
+---
+ mk/xe-linux-distribution | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
+index a574604..bcf6996 100755
+--- a/mk/xe-linux-distribution
++++ b/mk/xe-linux-distribution
+@@ -125,6 +125,9 @@ identify_redhat()
+     # CentOS Linux release 7.0.1406 (Core)
+     # CentOS Stream release 8
+ 
++    # distro=rocky
++    # Rocky Linux release 8.3
++
+     # distro=cloudlinux
+     # CloudLinux Server release 6.10 (Vladimir Lyakhov)
+     # CloudLinux Linux release 6.9
+@@ -155,6 +158,7 @@ identify_redhat()
+                -e 's/^CentOS release \([0-9]*\) (.*)/distro=centos;major=\1/gp;' \
+                -e 's/^CentOS Linux release \([0-9]*\)\.\([0-9]*\).*$/distro=centos;major=\1;minor=\2/gp;' \
+                -e 's/^CentOS Stream release \([0-9]*\).*$/distro=centos;major=\1/gp;' \
++               -e 's/^Rocky Linux release \([0-9]*\)\.\([0-9]*\).*$/distro=rocky;major=\1;minor=\2/gp;' \
+                -e 's/^CloudLinux\( Linux|Server\)\? release \([0-9]*\)\.\([0-9]*\)\(\.[0-9]*\)\? (.*)/distro=cloudlinux;major=\2;minor=\1/gp;' \
+                -e 's/^CloudLinux release \([0-9]*\)\.\([0-9]*\)\(\.[0-9]*\)\? (.*)/distro=cloudlinux;major=\1;minor=\2/gp;' \
+                -e 's/^Enterprise Linux Enterprise Linux .* release \([0-9]*\)\.\([0-9]*\) (.*)$/distro=oracle;major=\1;minor=\2;/gp;' \
+@@ -563,6 +567,8 @@ if [ -z "${TEST}" ] ; then
+     identify_kylin  /etc/neokylin-release  && exit 0
+     identify_redhat /etc/oracle-release && exit 0
+     identify_redhat /etc/enterprise-release && exit 0
++    #identify Rocky before CentOS and RHEL, as Rocky has both, centos-release and redhat-release
++    identify_redhat /etc/rocky-release && exit 0
+     identify_redhat /etc/centos-release && exit 0
+     identify_redhat /etc/redhat-release && exit 0
+     #identify SuSE-release before, as previous version of SUSE or other distros also have os-release
+-- 
+2.30.2
+

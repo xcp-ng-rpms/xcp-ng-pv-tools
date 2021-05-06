@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 5
+%define _release 6
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -57,6 +57,10 @@ Patch5: 0005-Backport-CA-349929-Fix-handling-of-etc-centos-releas.patch
 Patch6: 0006-Backport-Add-CentOS-Stream-to-xe-linux-distribution.patch
 Patch7: 0007-Fix-shebang-in-install.sh-for-portability.patch
 Patch8: 0008-Fix-FreePBX-detection.patch
+Patch9: 0009-Support-for-Rocky-Linux-distribution.patch
+Patch10: 0010-Add-support-for-Rocky-Linux-in-install.sh.patch
+Patch11: 0011-Add-support-for-AlmaLinux-to-xe-linux-distribution.patch
+Patch12: 0012-Add-support-for-AlmaLinux-8-in-install.sh.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -207,6 +211,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Fri May 07 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-6
+- Add support for Rocky Linux and AlmaLinux
+
 * Mon May 03 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-5
 - Fix FreePBX detection
 

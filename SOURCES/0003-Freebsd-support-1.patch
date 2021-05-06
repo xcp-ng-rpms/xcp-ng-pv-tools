@@ -1,7 +1,7 @@
 From 4410c8e50ad7eaad9eabe0754a61d4025843710a Mon Sep 17 00:00:00 2001
 From: Paco Hope <pacohope@users.noreply.github.com>
 Date: Wed, 17 Jun 2020 09:14:10 -0400
-Subject: [PATCH 3/8] Freebsd support (#1)
+Subject: [PATCH 03/12] Freebsd support (#1)
 
 add detection and installation for FreeBSD
 
