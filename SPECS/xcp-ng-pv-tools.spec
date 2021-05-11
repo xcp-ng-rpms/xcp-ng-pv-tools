@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 6
+%define _release 7
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -193,6 +193,12 @@ genisoimage -joliet -joliet-long -r \
             -o guest-tools.iso \
             iso/
 
+%check
+# Test the xe-linux-distribution script
+pushd mk
+PATH=$PATH:. ./xe-linux-distribution-test
+popd
+
 %install
 install -D -m644 guest-tools.iso %{buildroot}/opt/xensource/packages/iso/guest-tools-%{iso_version}.iso
 install -D -m755 %{SOURCE2} %{buildroot}/opt/xensource/bin/sr_rescan
@@ -211,6 +217,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Tue May 11 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-7
+- Test the xe-linux-distribution script during build
+
 * Fri May 07 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-6
 - Add support for Rocky Linux and AlmaLinux
 
