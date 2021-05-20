@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 7
+%define _release 8
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -61,6 +61,7 @@ Patch9: 0009-Support-for-Rocky-Linux-distribution.patch
 Patch10: 0010-Add-support-for-Rocky-Linux-in-install.sh.patch
 Patch11: 0011-Add-support-for-AlmaLinux-to-xe-linux-distribution.patch
 Patch12: 0012-Add-support-for-AlmaLinux-8-in-install.sh.patch
+Patch13: 0013-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -217,6 +218,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Thu May 20 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-8
+- Add 0013-Fix-FreePBX-detection-when-centos-release-is-missing.patch
+
 * Tue May 11 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-7
 - Test the xe-linux-distribution script during build
 

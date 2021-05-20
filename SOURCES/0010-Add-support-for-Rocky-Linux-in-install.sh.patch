@@ -1,7 +1,7 @@
 From d6a58b4fff7c7c688ead00734e2a9c365f30b639 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Thu, 6 May 2021 14:01:44 +0200
-Subject: [PATCH 10/12] Add support for Rocky Linux in install.sh
+Subject: [PATCH 10/13] Add support for Rocky Linux in install.sh
 
 Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
 ---

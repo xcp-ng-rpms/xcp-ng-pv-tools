@@ -1,7 +1,7 @@
 From a8a98604436900303071635246c701b5ac020268 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Thu, 6 May 2021 10:02:47 -0700
-Subject: [PATCH 11/12] Add support for AlmaLinux to xe-linux-distribution
+Subject: [PATCH 11/13] Add support for AlmaLinux to xe-linux-distribution
 
 Based on https://github.com/xenserver/xe-guest-utilities/pull/99
 and https://github.com/xenserver/xe-guest-utilities/pull/100

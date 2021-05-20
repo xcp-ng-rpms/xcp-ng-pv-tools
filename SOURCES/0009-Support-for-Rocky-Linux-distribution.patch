@@ -1,7 +1,7 @@
 From fbd96b7bfa6f90ebdacfb698f1983020d18733e4 Mon Sep 17 00:00:00 2001
 From: Robert Scheck <robert@fedoraproject.org>
 Date: Sun, 2 May 2021 19:48:02 +0200
-Subject: [PATCH 09/12] Support for Rocky Linux distribution
+Subject: [PATCH 09/13] Support for Rocky Linux distribution
 
 [Additional comment from Samuel Verschelde, not present in the original commit]
 this commit was cherry-picked from commit 37cfe6dde3f10eeb0eb95ab042377d1fa97e9ecc,

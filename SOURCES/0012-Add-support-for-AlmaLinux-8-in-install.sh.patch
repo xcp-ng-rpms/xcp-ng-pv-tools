@@ -1,7 +1,7 @@
 From 940634a5521006269fa9013cf976ed02a122d5db Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Fri, 7 May 2021 16:33:37 +0200
-Subject: [PATCH 12/12] Add support for AlmaLinux 8 in install.sh
+Subject: [PATCH 12/13] Add support for AlmaLinux 8 in install.sh
 
 Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
 ---
