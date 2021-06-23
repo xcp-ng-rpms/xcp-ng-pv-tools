@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 8
+%define _release 9
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -80,6 +80,7 @@ ISO with the Linux PV Tools
 
 %prep
 %autosetup -p1 -n xe-guest-utilities-%{xgu_version}
+sed -i mk/xe-linux-distribution.init -e 's/@BRAND_GUEST@/Virtual Machine/'
 
 %build
 # *** Functions ***
@@ -218,6 +219,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Wed Jun 23 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-9
+- Fix service name in xe-linux-distribution.init (replace branding placeholder)
+
 * Thu May 20 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-8
 - Add 0013-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 
