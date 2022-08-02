@@ -1,0 +1,84 @@
+From 8dabc47f46233c7247bcae0d70ee956f299def0f Mon Sep 17 00:00:00 2001
+From: Aaron Robson <aaron.robson@citrix.com>
+Date: Tue, 18 May 2021 15:05:48 +0100
+Subject: [PATCH 01/18] include vendor directory with 'go mod vendor' and have
+ symbolic links back to the other code directories
+
+me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../guestmetric ./
+me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../syslog ./
+me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../system ./
+me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../xenstoreclient/ ./
+me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../system ./
+
+Remove the sys library from vendoring.
+
+Signed-off-by: Aaron Robson <aaron.robson@citrix.com>
+---
+ go.mod                                   | 2 +-
+ vendor/modules.txt                       | 4 ++++
+ vendor/xe-guest-utilities/guestmetric    | 1 +
+ vendor/xe-guest-utilities/syslog         | 1 +
+ vendor/xe-guest-utilities/system         | 1 +
+ vendor/xe-guest-utilities/xenstoreclient | 1 +
+ 6 files changed, 9 insertions(+), 1 deletion(-)
+ create mode 100644 vendor/modules.txt
+ create mode 120000 vendor/xe-guest-utilities/guestmetric
+ create mode 120000 vendor/xe-guest-utilities/syslog
+ create mode 120000 vendor/xe-guest-utilities/system
+ create mode 120000 vendor/xe-guest-utilities/xenstoreclient
+
+diff --git a/go.mod b/go.mod
+index 18f76f5..272fdf6 100644
+--- a/go.mod
++++ b/go.mod
+@@ -1,4 +1,4 @@
+-module xe-guest-utilities
++module github.com/xenserver/xe-guest-utilities
+ 
+ go 1.16
+ 
+diff --git a/vendor/modules.txt b/vendor/modules.txt
+new file mode 100644
+index 0000000..c77a673
+--- /dev/null
++++ b/vendor/modules.txt
+@@ -0,0 +1,4 @@
++# golang.org/x/sys v0.0.0-20210414055047-fe65e336abe0
++## explicit
++golang.org/x/sys/internal/unsafeheader
++golang.org/x/sys/unix
+diff --git a/vendor/xe-guest-utilities/guestmetric b/vendor/xe-guest-utilities/guestmetric
+new file mode 120000
+index 0000000..4c91f85
+--- /dev/null
++++ b/vendor/xe-guest-utilities/guestmetric
+@@ -0,0 +1 @@
++../../guestmetric
+\ No newline at end of file
+diff --git a/vendor/xe-guest-utilities/syslog b/vendor/xe-guest-utilities/syslog
+new file mode 120000
+index 0000000..d0fb752
+--- /dev/null
++++ b/vendor/xe-guest-utilities/syslog
+@@ -0,0 +1 @@
++../../syslog
+\ No newline at end of file
+diff --git a/vendor/xe-guest-utilities/system b/vendor/xe-guest-utilities/system
+new file mode 120000
+index 0000000..257713b
+--- /dev/null
++++ b/vendor/xe-guest-utilities/system
+@@ -0,0 +1 @@
++../../system
+\ No newline at end of file
+diff --git a/vendor/xe-guest-utilities/xenstoreclient b/vendor/xe-guest-utilities/xenstoreclient
+new file mode 120000
+index 0000000..3fe63d2
+--- /dev/null
++++ b/vendor/xe-guest-utilities/xenstoreclient
+@@ -0,0 +1 @@
++../../xenstoreclient/
+\ No newline at end of file
+-- 
+2.30.2
+

@@ -1,7 +1,7 @@
-From 940634a5521006269fa9013cf976ed02a122d5db Mon Sep 17 00:00:00 2001
+From 238898877f672cc7f570d38fdde0d1b833f28ec3 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Fri, 7 May 2021 16:33:37 +0200
-Subject: [PATCH 12/13] Add support for AlmaLinux 8 in install.sh
+Subject: [PATCH 16/18] Add support for AlmaLinux 8 in install.sh
 
 Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
 ---
@@ -9,21 +9,21 @@ Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/mk/install.sh b/mk/install.sh
-index 445d180..7f6de6c 100755
+index 088a28f..44c6f7c 100755
 --- a/mk/install.sh
 +++ b/mk/install.sh
 @@ -135,7 +135,7 @@ select_pkgs_rhel()
  	rhel7|centos7|oracle7|scientific7|neokylin7|cloudlinux7)
  	    # No additional kernel package
  	    ;;
--    rhel8|oracle8|centos8|cloudlinux8|rocky8)
-+    rhel8|oracle8|centos8|cloudlinux8|rocky8|almalinux8)
+-    rhel8|oracle8|centos8|rocky8|cloudlinux8)
++    rhel8|oracle8|centos8|rocky8|cloudlinux8|almalinux8)
  	    # No additional kernel package
  	    ;;
  	sangoma*)
 @@ -543,7 +543,7 @@ install_freebsd()
  case "${os_distro}" in
-     rhel|centos|oracle|fedora|rocky)   select_pkgs_rhel ;;
+     rhel|centos|oracle|fedora|rocky)         select_pkgs_rhel ;;
      scientific|neokylin|asianux|turbo) select_pkgs_rhel ;;
 -    cloudlinux|sangoma)                select_pkgs_rhel ;;
 +    cloudlinux|sangoma|almalinux)      select_pkgs_rhel ;;

@@ -1,0 +1,35 @@
+From 60b796dbaf453c8c4d67e7940bf32618ddea577d Mon Sep 17 00:00:00 2001
+From: Xihuan Yang <xihuan.yang@citrix.com>
+Date: Mon, 17 May 2021 10:31:47 +0800
+Subject: [PATCH 02/18] Modify XenServer to Citrix Hypervisor in README.md
+
+Signed-off-by: Xihuan Yang <xihuan.yang@citrix.com>
+---
+ README.md | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/README.md b/README.md
+index 4aaac41..9bc8a2c 100644
+--- a/README.md
++++ b/README.md
+@@ -3,7 +3,7 @@
+ Introduction
+ ===================
+ 
+-This is the golang guest utilities for XenServer
++This is the golang guest utilities for Citrix Hypervisor
+ 
+ 
+ XenStore CLI
+@@ -11,7 +11,7 @@ XenStore CLI
+ xe-guest-utilities.git/xenstore
+ 
+ 
+-XenServer Guest Utilities
++Citrix Hypervisor Guest Utilities
+ -----------
+ xe-guest-utilities.git/xe-daemon
+ 
+-- 
+2.30.2
+

@@ -1,6 +1,6 @@
 # xgu stands for xe-guest-utilities
 %define xgu_major 7
-%define xgu_minor 20
+%define xgu_minor 30
 %define xgu_micro 0
 %define xgu_version %{xgu_major}.%{xgu_minor}.%{xgu_micro}
 
@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 9
+%define _release 10
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -46,22 +46,31 @@ Source16: debian-prerm
 Source17: debian-rules
 Patch0: LICENSE.patch
 
-# Additional patches, created from the maintenance branch (e.g. 7.20.0-8.2)
+# Additional patches, created from the maintenance branch (e.g. 7.30.0-8.2)
 # Example creation command:
-# git format-patch 7.20.0-XS_with_install_sh..7.20.0-8.2
-Patch1: 0001-Add-support-for-CloudLinux-which-is-based-on-CentOS.patch
-Patch2: 0002-Add-support-for-Sangoma-Linux-FreePBX-CentOS-based.patch
-Patch3: 0003-Freebsd-support-1.patch
-Patch4: 0004-Backport-Fix-name-of-tarball-based-on-GOARCH.patch
-Patch5: 0005-Backport-CA-349929-Fix-handling-of-etc-centos-releas.patch
-Patch6: 0006-Backport-Add-CentOS-Stream-to-xe-linux-distribution.patch
-Patch7: 0007-Fix-shebang-in-install.sh-for-portability.patch
-Patch8: 0008-Fix-FreePBX-detection.patch
-Patch9: 0009-Support-for-Rocky-Linux-distribution.patch
-Patch10: 0010-Add-support-for-Rocky-Linux-in-install.sh.patch
-Patch11: 0011-Add-support-for-AlmaLinux-to-xe-linux-distribution.patch
-Patch12: 0012-Add-support-for-AlmaLinux-8-in-install.sh.patch
-Patch13: 0013-Fix-FreePBX-detection-when-centos-release-is-missing.patch
+# git format-patch 7.30.0-XS_with_install_sh..7.30.0-8.2
+
+# Patch1 to Patch10: upstream commits that didn't belong to a tag yet
+Patch1: 0001-include-vendor-directory-with-go-mod-vendor-and-have.patch
+Patch2: 0002-Modify-XenServer-to-Citrix-Hypervisor-in-README.md.patch
+Patch3: 0003-Update-Building-instructions-for-new-go-versions.patch
+Patch4: 0004-Support-generic-distributions-using-os-release.patch
+Patch5: 0005-CA-362560-Go-build-not-get-the-version-replaced-sour.patch
+Patch6: 0006-feat-Slackware-support.patch
+Patch7: 0007-Fix-archlinux-guestmetric-for-ip-interfaces.patch
+Patch8: 0008-chore-Added-identify_os_release-to-xe-linux-distribu.patch
+Patch9: 0009-Make-xenstore-utilities-link-to-relative-path-in-rpm.patch
+Patch10: 0010-rpm-also-includes-the-recently-added-xenstore-tools.patch
+
+# XCP-ng patches
+Patch11: 0011-Add-support-for-CloudLinux-which-is-based-on-CentOS.patch
+Patch12: 0012-Add-support-for-Sangoma-Linux-FreePBX-CentOS-based.patch
+Patch13: 0013-Freebsd-support-1.patch
+Patch14: 0014-Fix-shebang-in-install.sh-for-portability.patch
+Patch15: 0015-Fix-FreePBX-detection.patch
+Patch16: 0016-Add-support-for-AlmaLinux-8-in-install.sh.patch
+Patch17: 0017-Fix-FreePBX-detection-when-centos-release-is-missing.patch
+Patch18: 0018-Add-support-for-RHEL-9-and-derivatives-in-install.sh.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -219,6 +228,11 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Tue Aug 02 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-10
+- Sync to latest upstream master: v7.30.0 + 10 commits
+- Dropped patches merged upstream and rebased the rest
+- Add support for RHEL 9 and derivatives in install.sh
+
 * Wed Jun 23 2021 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-9
 - Fix service name in xe-linux-distribution.init (replace branding placeholder)
 

@@ -1,9 +1,9 @@
-From 4410c8e50ad7eaad9eabe0754a61d4025843710a Mon Sep 17 00:00:00 2001
+From f31ffe368aa2b467739c74b03321efec60b06222 Mon Sep 17 00:00:00 2001
 From: Paco Hope <pacohope@users.noreply.github.com>
 Date: Wed, 17 Jun 2020 09:14:10 -0400
-Subject: [PATCH 03/13] Freebsd support (#1)
+Subject: [PATCH 13/18] Freebsd support (#1)
 
-add detection and installation for FreeBSD
+Add detection and installation for FreeBSD
 
 The tools are installed using FreeBSD's repositories directly, using the `pkg` tool.
 ---
@@ -12,7 +12,7 @@ The tools are installed using FreeBSD's repositories directly, using the `pkg` t
  2 files changed, 49 insertions(+), 3 deletions(-)
 
 diff --git a/mk/install.sh b/mk/install.sh
-index 69183f5..f483679 100755
+index 4faae79..5ecce43 100755
 --- a/mk/install.sh
 +++ b/mk/install.sh
 @@ -75,7 +75,7 @@ fi
@@ -59,7 +59,7 @@ index 69183f5..f483679 100755
 +}
 +
  case "${os_distro}" in
-     rhel|centos|oracle|fedora)         select_pkgs_rhel ;;
+     rhel|centos|oracle|fedora|rocky)         select_pkgs_rhel ;;
      scientific|neokylin|asianux|turbo) select_pkgs_rhel ;;
 @@ -525,6 +548,7 @@ case "${os_distro}" in
      debian|ubuntu|linx|yinhe|Gooroom)  select_pkgs_debian ;;
@@ -96,10 +96,10 @@ index 69183f5..f483679 100755
  
  if [ -n "${KERNEL}" -o -n "${XGU}" ] ; then
 diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
-index fc9d244..dc9fa4a 100755
+index ee568dc..6cd22c4 100755
 --- a/mk/xe-linux-distribution
 +++ b/mk/xe-linux-distribution
-@@ -527,7 +527,27 @@ identify_boot2docker()
+@@ -568,7 +568,27 @@ identify_boot2docker()
      minor=$(awk -F. '{printf("%s.%s", $2, $3)}' /etc/version)
  
      write_to_output "boot2docker" "${major}" "${minor}" "boot2docker $(head -n 1 /etc/version)"
@@ -127,14 +127,14 @@ index fc9d244..dc9fa4a 100755
  }
  
  if [ $# -eq 1 ] ; then
-@@ -554,6 +574,7 @@ if [ -z "${TEST}" ] ; then
+@@ -598,6 +618,7 @@ if [ -z "${TEST}" ] ; then
      identify_debian /etc/debian_version && exit 0
      identify_boot2docker /etc/boot2docker && exit 0
      identify_sangoma /etc/centos-release && exit 0
 +    identify_freebsd && exit 0
+     identify_os_release /etc/os-release && exit 0
  
  
-     if [ $# -eq 1 ] ; then
 -- 
 2.30.2
 

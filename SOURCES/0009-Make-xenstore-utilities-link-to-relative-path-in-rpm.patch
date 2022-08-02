@@ -1,0 +1,63 @@
+From 66217f9de0918e5d11dcd8d521729df7884d8dfa Mon Sep 17 00:00:00 2001
+From: Robin Lee <cheeselee@fedoraproject.org>
+Date: Tue, 12 Nov 2019 15:24:29 +0800
+Subject: [PATCH 09/18] Make xenstore utilities link to relative path in rpm
+ and deb
+
+This completes d2e891547e4d4a75f200a37df1ee473cd74022a3
+
+Signed-off-by: Robin Lee <cheeselee@fedoraproject.org>
+---
+ mk/debian/rules               | 16 ++++++++--------
+ mk/xe-guest-utilities.spec.in |  8 ++++----
+ 2 files changed, 12 insertions(+), 12 deletions(-)
+
+diff --git a/mk/debian/rules b/mk/debian/rules
+index afc341c..d97e537 100644
+--- a/mk/debian/rules
++++ b/mk/debian/rules
+@@ -26,14 +26,14 @@ binary-arch: build
+ 
+ 	install -d $(DESTDIR)/usr/bin/
+ 	install -m 755 xenstore $(DESTDIR)/usr/bin/xenstore
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-read
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-write
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-exists
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-rm
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-list
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-ls
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-chmod
+-	ln -s /usr/bin/xenstore $(DESTDIR)/usr/bin/xenstore-watch
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-read
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-write
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-exists
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-rm
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-list
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-ls
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-chmod
++	ln -s xenstore $(DESTDIR)/usr/bin/xenstore-watch
+ 
+ 	cp xe-daemon $(DESTDIR)/usr/sbin/xe-daemon
+ 	chmod 0755 $(DESTDIR)/usr/sbin/xe-daemon
+diff --git a/mk/xe-guest-utilities.spec.in b/mk/xe-guest-utilities.spec.in
+index 33392bc..6189d8a 100644
+--- a/mk/xe-guest-utilities.spec.in
++++ b/mk/xe-guest-utilities.spec.in
+@@ -56,10 +56,10 @@ cp %{SOURCE5} %{buildroot}/usr/share/doc/%{name}-%{version}/examples/
+ 
+ install -d %{buildroot}/usr/bin/
+ install -m 755 %{SOURCE6}  %{buildroot}/usr/bin/xenstore
+-ln -s /usr/bin/xenstore %{buildroot}/usr/bin/xenstore-read
+-ln -s /usr/bin/xenstore %{buildroot}/usr/bin/xenstore-write
+-ln -s /usr/bin/xenstore %{buildroot}/usr/bin/xenstore-exists
+-ln -s /usr/bin/xenstore %{buildroot}/usr/bin/xenstore-rm
++ln -s xenstore %{buildroot}/usr/bin/xenstore-read
++ln -s xenstore %{buildroot}/usr/bin/xenstore-write
++ln -s xenstore %{buildroot}/usr/bin/xenstore-exists
++ln -s xenstore %{buildroot}/usr/bin/xenstore-rm
+ 
+ cp %{SOURCE9} %{buildroot}/etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
+ 
+-- 
+2.30.2
+

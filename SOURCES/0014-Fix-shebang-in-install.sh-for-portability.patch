@@ -1,7 +1,7 @@
-From 9530a611d40d4682584b0b625e026a72b80cfd95 Mon Sep 17 00:00:00 2001
+From 1e9b8eeeeba44c26cbfc033dfc24e3f181302e15 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi@laposte.net>
 Date: Tue, 30 Mar 2021 15:53:24 +0200
-Subject: [PATCH 07/13] Fix shebang in install.sh for portability
+Subject: [PATCH 14/18] Fix shebang in install.sh for portability
 
 Use /usr/bin/env bash for portability
 ---
@@ -9,7 +9,7 @@ Use /usr/bin/env bash for portability
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mk/install.sh b/mk/install.sh
-index f483679..bd5431e 100755
+index 5ecce43..088a28f 100755
 --- a/mk/install.sh
 +++ b/mk/install.sh
 @@ -1,4 +1,4 @@

@@ -1,7 +1,7 @@
-From e6070ee923681613a4e17600678ec38a967b1d88 Mon Sep 17 00:00:00 2001
+From f9fa9aef719d0d1632772abad5df8df610d3b806 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Thu, 20 May 2021 16:09:13 +0200
-Subject: [PATCH 13/13] Fix FreePBX detection when centos-release is missing
+Subject: [PATCH 17/18] Fix FreePBX detection when centos-release is missing
 
 For some reason, some FreePBX systems have a centos-release file and
 others don't. So we read sangoma-release first, which should always be
@@ -13,17 +13,17 @@ Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
  1 file changed, 1 insertion(+)
 
 diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
-index 63cef13..b5c174e 100755
+index 45fbb70..dcbd9b7 100755
 --- a/mk/xe-linux-distribution
 +++ b/mk/xe-linux-distribution
-@@ -586,6 +586,7 @@ if [ -z "${TEST}" ] ; then
+@@ -617,6 +617,7 @@ if [ -z "${TEST}" ] ; then
      identify_lsb lsb_release         && exit 0
      identify_debian /etc/debian_version && exit 0
      identify_boot2docker /etc/boot2docker && exit 0
 +    identify_sangoma /etc/sangoma-release && exit 0
      identify_sangoma /etc/centos-release && exit 0
      identify_freebsd && exit 0
- 
+     identify_os_release /etc/os-release && exit 0
 -- 
 2.30.2
 

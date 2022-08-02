@@ -1,7 +1,7 @@
-From ec5a6f3b9e92226625bc55ddc66478a69d4f5cdc Mon Sep 17 00:00:00 2001
+From 7ff1a7490094f940f43b51606d185dc30ba7bfe4 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Mon, 3 May 2021 20:26:20 +0200
-Subject: [PATCH 08/13] Fix FreePBX detection
+Subject: [PATCH 15/18] Fix FreePBX detection
 
 The existing regexp fails because it's not an extended regexp
 and since sed is called with -r it must be an extended regexp.
@@ -13,10 +13,10 @@ Signed-Off-By: Samuel Verschelde <stormi-xcp@ylix.fr>
  1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
-index af57bfb..a574604 100755
+index 6cd22c4..45fbb70 100755
 --- a/mk/xe-linux-distribution
 +++ b/mk/xe-linux-distribution
-@@ -378,7 +378,7 @@ identify_sangoma()
+@@ -417,7 +417,7 @@ identify_sangoma()
      fi
  
      eval $(sed -rn \

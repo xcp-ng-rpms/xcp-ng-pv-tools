@@ -1,0 +1,28 @@
+From 5db43c57be34e6f193efcb633342e0f6228940bb Mon Sep 17 00:00:00 2001
+From: Robin Lee <cheeselee@fedoraproject.org>
+Date: Tue, 12 Nov 2019 15:27:05 +0800
+Subject: [PATCH 10/18] rpm also includes the recently added xenstore tools
+
+Signed-off-by: Robin Lee <cheeselee@fedoraproject.org>
+---
+ mk/xe-guest-utilities.spec.in | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/mk/xe-guest-utilities.spec.in b/mk/xe-guest-utilities.spec.in
+index 6189d8a..86be84a 100644
+--- a/mk/xe-guest-utilities.spec.in
++++ b/mk/xe-guest-utilities.spec.in
+@@ -60,6 +60,10 @@ ln -s xenstore %{buildroot}/usr/bin/xenstore-read
+ ln -s xenstore %{buildroot}/usr/bin/xenstore-write
+ ln -s xenstore %{buildroot}/usr/bin/xenstore-exists
+ ln -s xenstore %{buildroot}/usr/bin/xenstore-rm
++ln -s xenstore %{buildroot}/usr/bin/xenstore-list
++ln -s xenstore %{buildroot}/usr/bin/xenstore-ls
++ln -s xenstore %{buildroot}/usr/bin/xenstore-chmod
++ln -s xenstore %{buildroot}/usr/bin/xenstore-watch
+ 
+ cp %{SOURCE9} %{buildroot}/etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
+ 
+-- 
+2.30.2
+

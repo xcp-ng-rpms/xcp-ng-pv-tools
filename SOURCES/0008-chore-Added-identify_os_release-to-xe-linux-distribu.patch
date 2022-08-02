@@ -1,0 +1,92 @@
+From cb202a212cb95b3553bff3f2c14f1465539304d1 Mon Sep 17 00:00:00 2001
+From: mco-system <michael.costa@mcos.nc>
+Date: Thu, 17 Feb 2022 12:16:38 +1100
+Subject: [PATCH 08/18] chore: Added identify_os_release to
+ xe-linux-distribution-test + Slackware 15.0 test case via identify_os_release
+
+Signed-off-by: mco-system <michael.costa@mcos.nc>
+---
+ mk/testcases/slackware-15.0   | 11 +++++++++++
+ mk/xe-linux-distribution      | 21 ---------------------
+ mk/xe-linux-distribution-test |  2 ++
+ 3 files changed, 13 insertions(+), 21 deletions(-)
+ create mode 100644 mk/testcases/slackware-15.0
+
+diff --git a/mk/testcases/slackware-15.0 b/mk/testcases/slackware-15.0
+new file mode 100644
+index 0000000..4cc0177
+--- /dev/null
++++ b/mk/testcases/slackware-15.0
+@@ -0,0 +1,11 @@
++NAME=Slackware
++VERSION="15.0"
++ID=slackware
++VERSION_ID=15.0
++PRETTY_NAME="Slackware 15.0 x86_64 (post 15.0 -current)"
++ANSI_COLOR="0;34"
++CPE_NAME="cpe:/o:slackware:slackware_linux:15.0"
++HOME_URL="http://slackware.com/"
++SUPPORT_URL="http://www.linuxquestions.org/questions/slackware-14/"
++BUG_REPORT_URL="http://www.linuxquestions.org/questions/slackware-14/"
++VERSION_CODENAME=current
+\ No newline at end of file
+diff --git a/mk/xe-linux-distribution b/mk/xe-linux-distribution
+index da2c100..fc9c19c 100755
+--- a/mk/xe-linux-distribution
++++ b/mk/xe-linux-distribution
+@@ -535,26 +535,6 @@ identify_boot2docker()
+ 
+ }
+ 
+-identify_slackware()
+-{
+-    # distro
+-    # 'Slackware Linux'
+-    local slackware_version="$1"
+-    local major
+-    local minor
+-    if [ ! -f "${slackware_version}" ] ; then
+-        return 1
+-    fi
+-    eval $(sed -n \
+-               -e 's/^Slackware \([0-9]*\)\.\([0-9]*\).*$/distro=slackware;major=\1;minor=\2/gp;' \
+-                         "${slackware_version}")
+-    if [ -z "${major}" -o -z "${distro}" -o -z "${minor}" ] ; then
+-        return 1
+-    fi
+-
+-    write_to_output "${distro}" "${major}" "${minor}" "$(head -n 1 ${slackware_version})"
+-}
+-
+ if [ $# -eq 1 ] ; then
+     exec 1>"$1"
+ fi
+@@ -582,7 +562,6 @@ if [ -z "${TEST}" ] ; then
+     identify_debian /etc/debian_version && exit 0
+     identify_boot2docker /etc/boot2docker && exit 0
+     identify_os_release /etc/os-release && exit 0
+-    identify_slackware /etc/slackware-version && exit 0
+ 
+ 
+     if [ $# -eq 1 ] ; then
+diff --git a/mk/xe-linux-distribution-test b/mk/xe-linux-distribution-test
+index 58fe395..3f89631 100755
+--- a/mk/xe-linux-distribution-test
++++ b/mk/xe-linux-distribution-test
+@@ -15,6 +15,7 @@ test_identify()
+     identify_debian "${1}" || \
+     identify_redhat "${1}" || \
+     identify_sles   "${1}" || \
++    identify_os_release "${1}" || \
+     return 1
+ }
+ 
+@@ -87,4 +88,5 @@ do_test "testcases/centos8.3"            "centos 8 3"
+ do_test "testcases/centos-stream-8"      "centos 8 0"
+ do_test "testcases/rocky-8.3"            "rocky 8 3"
+ do_test "testcases/almalinux-8.3"        "almalinux 8 3"
++do_test "testcases/slackware-15.0"       "slackware 15 0"
+ exit 0
+-- 
+2.30.2
+
