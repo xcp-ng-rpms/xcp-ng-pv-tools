@@ -29,8 +29,9 @@ URL: https://github.com/xcp-ng/xe-guest-utilities
 
 # We want an archive that matches upstream tag, but with install.sh included.
 # Tarball created from https://github.com/xcp-ng/xe-guest-utilities with command:
-# git archive $XGUVERSION-XS_with_install_sh --prefix=xe-guest-utilities-$XGUVERSION/ --format tar.gz -o xe-guest-utilities-$XGUVERSION-with_install_sh.tar.gz
+# git archive $XGUVERSION-XS_with_install_sh --prefix=xe-guest-utilities/ --format tar.gz -o xe-guest-utilities-$XGUVERSION-with_install_sh.tar.gz
 # When upstream will finally add install.sh to their repo, then this will become simpler
+# Note: we don't include the version in --prefix to workaround https://github.com/xenserver/xe-guest-utilities/issues/128
 Source0: xe-guest-utilities-%{xgu_version}-with_install_sh.tar.gz
 Source1: README.txt
 Source2: sr_rescan
@@ -88,7 +89,7 @@ Obsoletes: xenserver-pv-tools
 ISO with the Linux PV Tools
 
 %prep
-%autosetup -p1 -n xe-guest-utilities-%{xgu_version}
+%autosetup -p1 -n xe-guest-utilities
 sed -i mk/xe-linux-distribution.init -e 's/@BRAND_GUEST@/Virtual Machine/'
 
 %build
@@ -156,11 +157,12 @@ function copy_tgz {
 }
 
 # *** Begin ***
-export GOPATH=/usr/share/gocode
 mkdir -p iso/Linux
 touch iso/Linux/versions.rpm
 touch iso/Linux/versions.deb
 touch iso/Linux/versions.tgz
+# use system libs
+ln -s %{gopath}/src/golang.org vendor
 
 # *** x86_64 build ***
 GOARCH=amd64 make \
