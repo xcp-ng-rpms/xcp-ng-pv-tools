@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 10
+%define _release 11
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -230,6 +230,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Fri Aug 05 2022 Gael Duperrey <gduperrey@vates.fr> - 8.2.0-11
+- Add missing Requires for chkconfig in xe-guest-utilities.spec
+
 * Tue Aug 02 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-10
 - Sync to latest upstream master: v7.30.0 + 10 commits
 - Dropped patches merged upstream and rebased the rest

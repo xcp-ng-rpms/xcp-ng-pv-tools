@@ -7,6 +7,9 @@ Release: %xgu_release
 License: BSD
 Group: Xen
 URL: https://github.com/xcp-ng/xe-guest-utilities
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires: chkconfig
 
 Source0: xe-linux-distribution
 Source1: xe-linux-distribution.init
