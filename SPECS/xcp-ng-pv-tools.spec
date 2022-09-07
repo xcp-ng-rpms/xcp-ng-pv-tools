@@ -9,7 +9,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 10
+%define _release 11
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -36,7 +36,8 @@ Source0: xe-guest-utilities-%{xgu_version}-with_install_sh.tar.gz
 Source1: README.txt
 Source2: sr_rescan
 Source3: unmount_xstools.sh
-Source4: xe-guest-utilities.spec
+Source4: xe-guest-utilities-legacy.spec
+Source5: xe-guest-utilities.spec
 Source10: debian-changelog
 Source11: debian-compat
 Source12: debian-control
@@ -72,6 +73,8 @@ Patch15: 0015-Fix-FreePBX-detection.patch
 Patch16: 0016-Add-support-for-AlmaLinux-8-in-install.sh.patch
 Patch17: 0017-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 Patch18: 0018-Add-support-for-RHEL-9-and-derivatives-in-install.sh.patch
+Patch19: 0019-Fix-paths-in-xe-linux-distribution.service-for-XCP-n.patch
+Patch20: 0020-Update-install.sh-to-manage-two-rpm.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -94,15 +97,41 @@ sed -i mk/xe-linux-distribution.init -e 's/@BRAND_GUEST@/Virtual Machine/'
 
 %build
 # *** Functions ***
-function build_and_copy_rpm {
+function build_and_copy_rpm_legacy {
     ARCH=$1
-    mkdir -p rpmbuild-$ARCH
-    pushd rpmbuild-$ARCH
+    mkdir -p rpmbuild-$ARCH-legacy
+    pushd rpmbuild-$ARCH-legacy
     mkdir SPECS SOURCES
     cp %{SOURCE4} SPECS/
     cp ../build/obj/{xe-daemon,xenstore} SOURCES/
     cp ../LICENSE SOURCES/
     cp ../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} SOURCES/
+    # _rpmfilename redefined to be independent from the build environment definition
+    rpmbuild --target $ARCH \
+        -bb SPECS/xe-guest-utilities-legacy.spec \
+        --define "_topdir $(pwd)" \
+        --define "xgu_version %{xgu_version}" \
+        --define "xgu_release %{xgu_release}" \
+        --define "changelogdate $(LC_ALL=C date +'%a %b %d %Y')" \
+        --define "_rpmfilename %%{NAME}-%%{VERSION}-%%{RELEASE}.%%{ARCH}.rpm"
+    popd
+
+    # Copy RPMs
+    install -m 0644 rpmbuild-$ARCH-legacy/RPMS/*.rpm iso/Linux/
+    # Two RPMs are produced
+    RPMS=$(cd rpmbuild-$ARCH-legacy/RPMS/ && ls *.rpm)
+    echo "XE_GUEST_UTILITIES_PKG_FILE_LEGACY_$ARCH='$(echo $RPMS | tr '\n' ' ')'" >> versions.rpm
+}
+
+function build_and_copy_rpm {
+    ARCH=$1
+    mkdir -p rpmbuild-$ARCH
+    pushd rpmbuild-$ARCH
+    mkdir SPECS SOURCES
+    cp %{SOURCE5} SPECS/
+    cp ../build/obj/{xe-daemon,xenstore} SOURCES/
+    cp ../LICENSE SOURCES/
+    cp ../mk/{xe-linux-distribution,xen-vcpu-hotplug.rules,xe-linux-distribution.service} SOURCES/
     # _rpmfilename redefined to be independent from the build environment definition
     rpmbuild --target $ARCH \
         -bb SPECS/xe-guest-utilities.spec \
@@ -173,6 +202,7 @@ GOARCH=amd64 make \
 
 copy_tgz amd64
 build_and_copy_rpm x86_64
+build_and_copy_rpm_legacy x86_64
 build_and_copy_deb amd64
 
 # *** i386 build ***
@@ -187,6 +217,7 @@ copy_tgz i386
 # Copy 32 bit xe-daemon binary
 install -m 0755 build/obj/xe-daemon iso/Linux/
 build_and_copy_rpm i386
+build_and_copy_rpm_legacy i386
 build_and_copy_deb i386
 
 # *** Build the ISO ***
@@ -230,6 +261,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Tue Sep 12 2022 Gael Duperrey <gduperrey@vates.fr> - 8.2.0-11
+- Switch RPMs to systemd by default and provide legacy RPMs for chkconfig.
+
 * Tue Aug 02 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-10
 - Sync to latest upstream master: v7.30.0 + 10 commits
 - Dropped patches merged upstream and rebased the rest

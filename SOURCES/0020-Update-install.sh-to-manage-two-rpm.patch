@@ -1,0 +1,42 @@
+From 658ead456dd78c2db9b31c65933ed4bd34da2398 Mon Sep 17 00:00:00 2001
+From: Gael Duperrey <gduperrey@vates.fr>
+Date: Wed, 7 Sep 2022 16:36:57 +0200
+Subject: [PATCH 20/20] Update install.sh to manage two rpm
+
+Signed-off-by: Gael Duperrey <gduperrey@vates.fr>
+---
+ mk/install.sh | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index ac75e0f..c00b977 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -104,13 +104,18 @@ failure()
+ select_rpm_utilities()
+ {
+     if [ -f "${DATADIR}/versions.rpm" ] ; then
+-	source ${DATADIR}/versions.rpm
+-	XGU=
+-	for p in $(eval echo \${XE_GUEST_UTILITIES_PKG_FILE_${ARCH}}) ; do
+-	    XGU="$XGU ${DATADIR}/${p}"
+-	done
++        source ${DATADIR}/versions.rpm
++        XGU=
++        if command -v systemctl >/dev/null 2>&1; then
++            LEGACY=
++        else
++            LEGACY="LEGACY_"
++        fi
++        for p in $(eval echo \${XE_GUEST_UTILITIES_PKG_FILE_${LEGACY}${ARCH}}) ; do
++            XGU="$XGU ${DATADIR}/${p}"
++        done
+     else
+-	echo "Warning: Guest utilities not found in ${DATADIR}."
++        echo "Warning: Guest utilities not found in ${DATADIR}."
+     fi
+ }
+ 
+-- 
+2.37.2
+

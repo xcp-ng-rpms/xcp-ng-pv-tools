@@ -1,23 +1,27 @@
 # -*- rpm-spec -*-
 
 Summary: Virtual Machine Monitoring Scripts
+# Keep name as xe-guest-utilities to avoid upgrade issues with scriptlets preun/post scriptlets
+# The file name will change, the but the RPM identifier will remain the same.
+# To differenciate them, we'll add .legacy to the release tag.
 Name: xe-guest-utilities
 Version: %xgu_version
-Release: %xgu_release
+Release: %{xgu_release}.legacy
 License: BSD
 Group: Xen
 URL: https://github.com/xcp-ng/xe-guest-utilities
+Obsoletes: xe-guest-utilities < 7.30.0
 
 Source0: xe-linux-distribution
-Source1: xe-linux-distribution.service
+Source1: xe-linux-distribution.init
 Source2: xe-daemon
 Source3: xenstore
 Source4: LICENSE
 Source5: xen-vcpu-hotplug.rules
 
-Requires(post): systemd
-Requires(preun): systemd
-Requires(postun): systemd
+Requires(post): chkconfig
+Requires(preun): chkconfig
+Requires(postun): chkconfig
 
 %description
 Scripts for monitoring Virtual Machine.
@@ -30,15 +34,17 @@ Summary: Virtual Machine XenStore utilities
 %description xenstore
 Utilities for interacting with XenStore from within a Xen Virtual Machine
 
+Obsoletes: xe-guest-utilities-xenstore < 7.30.0
+
 %install
 install -d %{buildroot}/usr/sbin/
+install -d %{buildroot}/etc/init.d
 install -d %{buildroot}/etc/udev/rules.d
 install -d %{buildroot}/usr/bin/
 install -d %{buildroot}/usr/share/doc/%{name}-%{version}
-install -d %{buildroot}/usr/lib/systemd/system
 
 install -m 755 %{SOURCE0} %{buildroot}/usr/sbin/xe-linux-distribution
-install -m 644 %{SOURCE1} %{buildroot}/usr/lib/systemd/system/xe-linux-distribution.service
+install -m 755 %{SOURCE1} %{buildroot}/etc/init.d/xe-linux-distribution
 install -m 755 %{SOURCE2} %{buildroot}/usr/sbin/xe-daemon
 install -m 755 %{SOURCE3} %{buildroot}/usr/bin/xenstore
 ln -s /usr/bin/xenstore %{buildroot}/usr/bin/xenstore-read
@@ -55,46 +61,26 @@ install -m 755 %{SOURCE5} %{buildroot}/etc/udev/rules.d/z10-xen-vcpu-hotplug.rul
 
 %post
 if [ $1 -eq 1 ]; then
-    systemctl enable xe-linux-distribution.service >/dev/null 2>&1 ||:
-    # If a version of the tools with an init.d service was uninstalled just before, systemd may see the service
-    # as active just after it enables it. In this situation, a start won't work and a restart is necessary.
-    if [ $(systemctl is-active xe-linux-distribution.service) == 'active' ] >/dev/null 2>&1; then
-        systemctl restart xe-linux-distribution.service >/dev/null 2>&1 ||:
-    else
-        systemctl start xe-linux-distribution.service >/dev/null 2>&1 ||:
-    fi
+    /sbin/chkconfig --add xe-linux-distribution >/dev/null 2>&1 ||:
+    service xe-linux-distribution start >/dev/null 2>&1 ||:
 elif [ $1 -eq 2 ]; then
-    # Handle the transition from an init.d service if needed
-    if command -v chkconfig >/dev/null 2>&1 && chkconfig --list xe-linux-distribution >/dev/null 2>&1; then
-        service xe-linux-distribution stop >/dev/null 2>&1 ||:
-        /sbin/chkconfig --del xe-linux-distribution >/dev/null 2>&1 ||:
-        systemctl enable xe-linux-distribution.service >/dev/null 2>&1 ||:
-        # systemd may see the new service as active, because it used to know it as an init.d service.
-        # And this despite the fact that we stopped the old service above.
-        # In this situation, a start won't work and a restart is necessary.
-        systemctl restart xe-linux-distribution.service >/dev/null 2>&1 ||:
-    else
-        systemctl restart xe-linux-distribution.service >/dev/null 2>&1 ||:
-    fi
+    service xe-linux-distribution restart >/dev/null 2>&1 ||:
 fi
 
 %preun
 if [ $1 -eq 0 ]; then
-    if systemctl is-enabled xe-linux-distribution >/dev/null 2>&1; then
-        systemctl disable xe-linux-distribution.service >/dev/null 2>&1 ||:
-        systemctl stop xe-linux-distribution.service >/dev/null 2>&1 ||:
+    if chkconfig --list xe-linux-distribution >/dev/null 2>&1; then
+        service xe-linux-distribution stop >/dev/null 2>&1 ||:
+        /sbin/chkconfig --del xe-linux-distribution >/dev/null 2>&1 ||:
     fi
 fi
 
-%postun
-systemctl daemon-reload >/dev/null 2>&1 ||:
-
 %files
 /usr/sbin/xe-linux-distribution
+/etc/init.d/xe-linux-distribution
 /usr/sbin/xe-daemon
 /etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
 /usr/share/doc/%{name}-%{version}/LICENSE
-/usr/lib/systemd/system/xe-linux-distribution.service
 
 %files xenstore
 /usr/bin/xenstore-*

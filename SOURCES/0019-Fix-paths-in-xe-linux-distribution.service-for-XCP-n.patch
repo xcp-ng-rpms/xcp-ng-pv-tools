@@ -1,0 +1,29 @@
+From 37324de21746f342fdf303eca01f9c494932d0cb Mon Sep 17 00:00:00 2001
+From: Gael Duperrey <gduperrey@vates.fr>
+Date: Thu, 25 Aug 2022 09:18:23 +0200
+Subject: [PATCH 19/19] Fix paths in xe-linux-distribution.service for XCP-ng
+
+Signed-off-by: Gael Duperrey <gduperrey@vates.fr>
+---
+ mk/xe-linux-distribution.service | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mk/xe-linux-distribution.service b/mk/xe-linux-distribution.service
+index 4e60a85..ff692a2 100644
+--- a/mk/xe-linux-distribution.service
++++ b/mk/xe-linux-distribution.service
+@@ -3,8 +3,8 @@ Description=Linux Guest Agent
+ ConditionVirtualization=xen
+ 
+ [Service]
+-ExecStartPre=/usr/share/oem/xs/xe-linux-distribution /var/cache/xe-linux-distribution
+-ExecStart=/usr/share/oem/xs/xe-daemon
++ExecStartPre=/usr/sbin/xe-linux-distribution /var/cache/xe-linux-distribution
++ExecStart=/usr/sbin/xe-daemon
+ 
+ [Install]
+ WantedBy=multi-user.target
+\ No newline at end of file
+-- 
+2.37.1
+
