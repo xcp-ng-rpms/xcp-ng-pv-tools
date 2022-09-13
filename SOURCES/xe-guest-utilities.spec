@@ -19,16 +19,12 @@ Requires(post): systemd
 Requires(preun): systemd
 Requires(postun): systemd
 
+Obsoletes: xe-guest-utilities-xenstore < 7.30.0-11
+
 %description
-Scripts for monitoring Virtual Machine.
+Scripts for monitoring Virtual Machines and utilities for interacting with XenStore.
 
 Writes distribution version information and IP address to XenStore.
-
-%package xenstore
-
-Summary: Virtual Machine XenStore utilities
-%description xenstore
-Utilities for interacting with XenStore from within a Xen Virtual Machine
 
 %install
 install -d %{buildroot}/usr/sbin/
@@ -95,8 +91,6 @@ systemctl daemon-reload >/dev/null 2>&1 ||:
 /etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
 /usr/share/doc/%{name}-%{version}/LICENSE
 /usr/lib/systemd/system/xe-linux-distribution.service
-
-%files xenstore
 /usr/bin/xenstore-*
 /usr/bin/xenstore
 

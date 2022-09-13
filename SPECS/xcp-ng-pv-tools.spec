@@ -263,6 +263,7 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 %changelog
 * Tue Sep 12 2022 Gael Duperrey <gduperrey@vates.fr> - 8.2.0-11
 - Switch RPMs to systemd by default and provide legacy RPMs for chkconfig.
+- Merge separate -xenstore RPMs back into xe-guest-utilities RPMs
 
 * Tue Aug 02 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.2.0-10
 - Sync to latest upstream master: v7.30.0 + 10 commits

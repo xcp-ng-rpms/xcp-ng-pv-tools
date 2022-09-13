@@ -10,7 +10,6 @@ Release: %{xgu_release}.legacy
 License: BSD
 Group: Xen
 URL: https://github.com/xcp-ng/xe-guest-utilities
-Obsoletes: xe-guest-utilities < 7.30.0
 
 Source0: xe-linux-distribution
 Source1: xe-linux-distribution.init
@@ -23,18 +22,13 @@ Requires(post): chkconfig
 Requires(preun): chkconfig
 Requires(postun): chkconfig
 
+Obsoletes: xe-guest-utilities < 7.30.0
+Obsoletes: xe-guest-utilities-xenstore < 7.30.0-11
+
 %description
-Scripts for monitoring Virtual Machine.
+Scripts for monitoring Virtual Machines and utilities for interacting with XenStore.
 
 Writes distribution version information and IP address to XenStore.
-
-%package xenstore
-
-Summary: Virtual Machine XenStore utilities
-%description xenstore
-Utilities for interacting with XenStore from within a Xen Virtual Machine
-
-Obsoletes: xe-guest-utilities-xenstore < 7.30.0
 
 %install
 install -d %{buildroot}/usr/sbin/
@@ -81,8 +75,6 @@ fi
 /usr/sbin/xe-daemon
 /etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
 /usr/share/doc/%{name}-%{version}/LICENSE
-
-%files xenstore
 /usr/bin/xenstore-*
 /usr/bin/xenstore
 
