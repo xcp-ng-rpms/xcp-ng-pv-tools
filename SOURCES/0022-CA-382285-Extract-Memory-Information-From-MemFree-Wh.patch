@@ -1,0 +1,38 @@
+From 6db1f59843ef5d3d95cd666bb3b5122408ff2aac Mon Sep 17 00:00:00 2001
+From: Lunfan Zhang <Lunfan.Zhang@citrix.com>
+Date: Tue, 19 Sep 2023 16:33:51 +0800
+Subject: [PATCH 2/2] CA-382285 Extract Memory Information From MemFree When
+ Kernel Version Is Less Then 3.14
+
+Signed-off-by: Lunfan Zhang <Lunfan.Zhang@citrix.com>
+(cherry picked from commit f9f379014c70477f013897b643f1f86f197637a2)
+---
+ guestmetric/guestmetric_linux.go | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/guestmetric/guestmetric_linux.go b/guestmetric/guestmetric_linux.go
+index bf59eba..507694f 100644
+--- a/guestmetric/guestmetric_linux.go
++++ b/guestmetric/guestmetric_linux.go
+@@ -63,12 +63,18 @@ func (c *Collector) CollectMemory() (GuestMetric, error) {
+ 	}
+ 	defer f.Close()
+ 	scanner := bufio.NewScanner(f)
++	foundMemAvailabel := false
+ 	for scanner.Scan() {
+ 		parts := regexp.MustCompile(`\w+`).FindAllString(scanner.Text(), -1)
+ 		switch parts[0] {
+ 		case "MemTotal":
+ 			current["meminfo_total"] = parts[1]
++		case "MemFree":
++			if !foundMemAvailabel{
++				current["meminfo_free"] = parts[1]
++			} 
+ 		case "MemAvailable":
++			foundMemAvailabel = true
+ 			current["meminfo_free"] = parts[1]
+ 		}
+ 	}
+-- 
+2.39.2
+
