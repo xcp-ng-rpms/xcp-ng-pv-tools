@@ -10,7 +10,7 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 1
+%define _release 2
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -76,6 +76,8 @@ Patch17: 0017-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 Patch18: 0018-Add-support-for-RHEL-9-and-derivatives-in-install.sh.patch
 Patch19: 0019-Fix-paths-in-xe-linux-distribution.service-for-XCP-n.patch
 Patch20: 0020-Update-install.sh-to-manage-two-rpm.patch
+Patch21: 0021-Fix-identification-of-blockdev-block-size.patch
+Patch22: 0022-CA-382285-Extract-Memory-Information-From-MemFree-Wh.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -262,6 +264,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Fri Dec 08 2023 Yann Dirson <yann.dirson@vates.fr> - 8.3-2
+- Include latest upstream fixes
+
 * Fri Sep 16 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-1
 - Rebuild for XCP-ng 8.3 and thus update the version to 8.3
 

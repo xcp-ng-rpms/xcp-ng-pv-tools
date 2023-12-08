@@ -1,0 +1,30 @@
+From 70b263faaef77a7bfa4a9aa60df5f8eadbaa7440 Mon Sep 17 00:00:00 2001
+From: Yann Dirson <yann.dirson@vates.fr>
+Date: Wed, 6 Jul 2022 19:04:30 +0200
+Subject: [PATCH 1/2] Fix identification of blockdev block size
+
+It was likely a typo to try accessing a "partition" directory under
+/sys/block/, where a "disk" directory was intended.
+
+Signed-off-by: Yann Dirson <yann.dirson@vates.fr>
+(cherry picked from commit 0338e739e35fe08c99672271d79907ab89115acf)
+---
+ guestmetric/guestmetric_linux.go | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/guestmetric/guestmetric_linux.go b/guestmetric/guestmetric_linux.go
+index 3cf32ba..bf59eba 100644
+--- a/guestmetric/guestmetric_linux.go
++++ b/guestmetric/guestmetric_linux.go
+@@ -250,7 +250,7 @@ func (c *Collector) CollectDisk() (GuestMetric, error) {
+ 				return nil, err
+ 			}
+ 			blocksize := 512
+-			if bs, err := readSysfs(fmt.Sprintf("/sys/block/%s/queue/physical_block_size", p)); err == nil {
++			if bs, err := readSysfs(fmt.Sprintf("/sys/block/%s/queue/physical_block_size", disk)); err == nil {
+ 				if bs1, err := strconv.Atoi(bs); err == nil {
+ 					blocksize = bs1
+ 				}
+-- 
+2.39.2
+
