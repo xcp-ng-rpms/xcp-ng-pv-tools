@@ -10,7 +10,10 @@
 
 Name: xcp-ng-pv-tools
 Version: %{xcp_ng_release}
-%define _release 2
+# xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
+# without reinitializing it to 1 when the RPM version changes.
+# Try to keep this in sync with other XCP-ng releases.
+%define _release 12
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -264,6 +267,11 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Fri Sep 09 2024 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-12
+- Update release to match that of the RPM in XCP-ng 8.2, since this is what
+  also defines the suffix of the version of the xe-guest-utilities packages
+  in the ISO.
+
 * Fri Dec 08 2023 Yann Dirson <yann.dirson@vates.fr> - 8.3-2
 - Include latest upstream fixes
 
