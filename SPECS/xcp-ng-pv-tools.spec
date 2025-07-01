@@ -13,7 +13,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 12
+%define _release 12.0.ydi.1
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -173,7 +173,7 @@ function build_and_copy_deb {
     cp ../../build/obj/{xe-daemon,xenstore} .
     cp ../../LICENSE .
     cp ../../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} .
-    dpkg-buildpackage -us -uc -a $ARCH
+    fakeroot dpkg-buildpackage -us -uc -a $ARCH
     popd
 
     # Copy Deb
@@ -267,6 +267,10 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Tue Jul 01 2025 Yann Dirson <yann.dirson@vates.tech> - 8.3-12.0.ydi.1
+- Run dpkg-buildpackage under total control of fakeroot, for some reason
+  the refault "-r fakeroot" has no effect on Alma10
+
 * Fri Sep 09 2024 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-12
 - Update release to match that of the RPM in XCP-ng 8.2, since this is what
   also defines the suffix of the version of the xe-guest-utilities packages
