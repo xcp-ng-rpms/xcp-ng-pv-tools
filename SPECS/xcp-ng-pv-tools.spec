@@ -13,7 +13,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 12
+%define _release 13
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -50,6 +50,9 @@ Source14: debian-postinst
 Source15: debian-postrm
 Source16: debian-prerm
 Source17: debian-rules
+
+Source100: xcpng-winpv-9.0.9137.0-Release-x64.zip
+
 Patch0: LICENSE.patch
 
 # Additional patches, created from the maintenance branch (e.g. 7.30.0-8.2)
@@ -95,7 +98,7 @@ Obsoletes: xenserver-pv-tools
 %define iso_version %{version}-%{release}
 
 %description
-ISO with the Linux PV Tools
+ISO with the guest PV Tools
 
 %prep
 %autosetup -p1 -n xe-guest-utilities
@@ -228,6 +231,8 @@ build_and_copy_deb i386
 
 # *** Build the ISO ***
 install -m 0644 %{SOURCE1} iso/README.txt
+unzip %{SOURCE100} 'package/*' -d iso/
+mv iso/package iso/Windows
 install -m 0644 versions.tgz versions.rpm versions.deb iso/Linux/
 install -m 0755 mk/install.sh \
                 mk/xe-linux-distribution \
@@ -267,7 +272,11 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
-* Fri Sep 09 2024 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-12
+* Mon Oct 13 2025 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-13
+- Add XCP-ng Windows PV drivers version 9.0.9137 Release Signed
+- Update the embedded README
+
+* Mon Sep 09 2024 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-12
 - Update release to match that of the RPM in XCP-ng 8.2, since this is what
   also defines the suffix of the version of the xe-guest-utilities packages
   in the ISO.
@@ -278,7 +287,7 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 * Fri Sep 16 2022 Samuel Verschelde <stormi-xcp@ylix.fr> - 8.3-1
 - Rebuild for XCP-ng 8.3 and thus update the version to 8.3
 
-* Tue Sep 12 2022 Gael Duperrey <gduperrey@vates.fr> - 8.2.0-11
+* Mon Sep 12 2022 Gael Duperrey <gduperrey@vates.fr> - 8.2.0-11
 - Switch RPMs to systemd by default and provide legacy RPMs for chkconfig.
 - Merge separate -xenstore RPMs back into xe-guest-utilities RPMs
 
