@@ -1,0 +1,27 @@
+From cf5de70a61424b24a5f20481629f75cee8198a03 Mon Sep 17 00:00:00 2001
+From: Adrian <7330099+adrsham@users.noreply.github.com>
+Date: Fri, 14 Jul 2023 17:36:55 -0700
+Subject: [PATCH] Remove "You should now reboot this Virtual Machine." message
+
+XCP-ng guest tools documentation mentions that reboot is not needed and will be eventually be removed.
+
+This commit removes that message.
+
+Signed-off-by: Adrian <7330099+adrsham@users.noreply.github.com>
+---
+ mk/install.sh | 4 ----
+ 1 file changed, 4 deletions(-)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index c00b977..53b868b 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -712,8 +712,4 @@ case ${GUEST_PKG_TYPE} in
+     pkg) install_freebsd ;;
+ esac
+ 
+-if [ -n "${KERNEL}" -o -n "${XGU}" ] ; then
+-    echo "You should now reboot this Virtual Machine."
+-fi
+-
+ exit 0

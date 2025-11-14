@@ -82,8 +82,10 @@ Patch17: 0017-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 Patch18: 0018-Add-support-for-RHEL-9-and-derivatives-in-install.sh.patch
 Patch19: 0019-Fix-paths-in-xe-linux-distribution.service-for-XCP-n.patch
 Patch20: 0020-Update-install.sh-to-manage-two-rpm.patch
+Patch21: 0021-Remove-You-should-now-reboot-this-Virtual-Machine.-m.patch
 Patch22: 0022-Fix-identification-of-blockdev-block-size.patch
 Patch23: 0023-CA-382285-Extract-Memory-Information-From-MemFree-Wh.patch
+Patch24: 0024-Support-RHEL-10-and-derivatives-in-install.sh.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -272,8 +274,10 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
-* Fri Nov 14 2025 Gael Duperrey <gduperrey@vates.tech> - 8.3-14 - WIP
+* Fri Nov 14 2025 Gael Duperrey <gduperrey@vates.tech> - 8.3-14
 - Remove noise from patches using git-format-patch options
+- Add patch to remove the invitation to reboot after install of the tools
+- Add patch to support RHEL 10 and derivatives in install.sh
 
 * Mon Oct 13 2025 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-13
 - Add XCP-ng Windows PV drivers version 9.0.9137 Release Signed
