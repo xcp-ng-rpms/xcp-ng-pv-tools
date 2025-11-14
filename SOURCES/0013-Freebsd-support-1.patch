@@ -1,7 +1,7 @@
 From f31ffe368aa2b467739c74b03321efec60b06222 Mon Sep 17 00:00:00 2001
 From: Paco Hope <pacohope@users.noreply.github.com>
 Date: Wed, 17 Jun 2020 09:14:10 -0400
-Subject: [PATCH 13/18] Freebsd support (#1)
+Subject: [PATCH] Freebsd support (#1)
 
 Add detection and installation for FreeBSD
 
@@ -135,6 +135,3 @@ index ee568dc..6cd22c4 100755
      identify_os_release /etc/os-release && exit 0
  
  
--- 
-2.30.2
-

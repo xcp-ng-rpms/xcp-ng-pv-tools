@@ -1,7 +1,7 @@
 From 8dabc47f46233c7247bcae0d70ee956f299def0f Mon Sep 17 00:00:00 2001
 From: Aaron Robson <aaron.robson@citrix.com>
 Date: Tue, 18 May 2021 15:05:48 +0100
-Subject: [PATCH 01/18] include vendor directory with 'go mod vendor' and have
+Subject: [PATCH] include vendor directory with 'go mod vendor' and have
  symbolic links back to the other code directories
 
 me@dev-machine:~/code/xe-guest-utilities/vendor/xe-guest-utilities$ ln -s ../../guestmetric ./
@@ -79,6 +79,3 @@ index 0000000..3fe63d2
 @@ -0,0 +1 @@
 +../../xenstoreclient/
 \ No newline at end of file
--- 
-2.30.2
-

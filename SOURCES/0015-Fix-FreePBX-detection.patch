@@ -1,7 +1,7 @@
 From 7ff1a7490094f940f43b51606d185dc30ba7bfe4 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Mon, 3 May 2021 20:26:20 +0200
-Subject: [PATCH 15/18] Fix FreePBX detection
+Subject: [PATCH] Fix FreePBX detection
 
 The existing regexp fails because it's not an extended regexp
 and since sed is called with -r it must be an extended regexp.
@@ -25,6 +25,3 @@ index 6cd22c4..45fbb70 100755
                "${sangoma_release}")
  
      if [ -z "${major}" -o -z "${distro}" ] ; then
--- 
-2.30.2
-

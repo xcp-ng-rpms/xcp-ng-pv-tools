@@ -1,7 +1,7 @@
 From ef0760561e2a846909466ab08e348fa89325f0b2 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi@laposte.net>
 Date: Wed, 16 Oct 2019 15:23:59 +0200
-Subject: [PATCH 12/18] Add support for Sangoma Linux (FreePBX), CentOS-based
+Subject: [PATCH] Add support for Sangoma Linux (FreePBX), CentOS-based
 
 Based on https://github.com/xenserver/xe-guest-utilities/pull/57
 
@@ -82,6 +82,3 @@ index b6b846d..ee568dc 100755
      identify_os_release /etc/os-release && exit 0
  
  
--- 
-2.30.2
-

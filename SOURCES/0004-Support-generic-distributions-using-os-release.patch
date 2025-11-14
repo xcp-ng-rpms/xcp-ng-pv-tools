@@ -1,7 +1,7 @@
 From ccf2bc624f78489f90d2cd47a24968e18a9ee707 Mon Sep 17 00:00:00 2001
 From: Stefan Agner <stefan@agner.ch>
 Date: Tue, 13 Jul 2021 17:16:23 +0200
-Subject: [PATCH 04/18] Support generic distributions using os-release
+Subject: [PATCH] Support generic distributions using os-release
 
 The /etc/os-release file is a standardized format containing operating
 system identification data. Like lsb_release it allows to get
@@ -66,6 +66,3 @@ index 75de6d1..fc9c19c 100755
  
  
      if [ $# -eq 1 ] ; then
--- 
-2.30.2
-

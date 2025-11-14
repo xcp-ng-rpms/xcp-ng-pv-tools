@@ -1,7 +1,7 @@
 From 37324de21746f342fdf303eca01f9c494932d0cb Mon Sep 17 00:00:00 2001
 From: Gael Duperrey <gduperrey@vates.fr>
 Date: Thu, 25 Aug 2022 09:18:23 +0200
-Subject: [PATCH 19/19] Fix paths in xe-linux-distribution.service for XCP-ng
+Subject: [PATCH] Fix paths in xe-linux-distribution.service for XCP-ng
 
 Signed-off-by: Gael Duperrey <gduperrey@vates.fr>
 ---
@@ -24,6 +24,3 @@ index 4e60a85..ff692a2 100644
  [Install]
  WantedBy=multi-user.target
 \ No newline at end of file
--- 
-2.37.1
-

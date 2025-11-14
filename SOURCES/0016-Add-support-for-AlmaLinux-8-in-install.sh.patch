@@ -1,7 +1,7 @@
 From 238898877f672cc7f570d38fdde0d1b833f28ec3 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Fri, 7 May 2021 16:33:37 +0200
-Subject: [PATCH 16/18] Add support for AlmaLinux 8 in install.sh
+Subject: [PATCH] Add support for AlmaLinux 8 in install.sh
 
 Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
 ---
@@ -30,6 +30,3 @@ index 088a28f..44c6f7c 100755
      sles|"suse linux")                 select_pkgs_sles ;;
      debian|ubuntu|linx|yinhe|Gooroom)  select_pkgs_debian ;;
      xe-ddk|xe-sdk)                     select_pkgs_xe ;;
--- 
-2.30.2
-

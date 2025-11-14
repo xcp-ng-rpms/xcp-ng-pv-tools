@@ -1,7 +1,7 @@
-From 658ead456dd78c2db9b31c65933ed4bd34da2398 Mon Sep 17 00:00:00 2001
+From 06f0082bb039f942250fafd428515626540f7dca Mon Sep 17 00:00:00 2001
 From: Gael Duperrey <gduperrey@vates.fr>
 Date: Wed, 7 Sep 2022 16:36:57 +0200
-Subject: [PATCH 20/20] Update install.sh to manage two rpm
+Subject: [PATCH] Update install.sh to manage two rpm
 
 Signed-off-by: Gael Duperrey <gduperrey@vates.fr>
 ---
@@ -37,6 +37,3 @@ index ac75e0f..c00b977 100755
      fi
  }
  
--- 
-2.37.2
-

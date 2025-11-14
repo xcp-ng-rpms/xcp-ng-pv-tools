@@ -1,7 +1,7 @@
 From 89dc13fb4d2ab69b4e324a8c2128471bb1ff495c Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Tue, 2 Aug 2022 17:05:32 +0200
-Subject: [PATCH 18/18] Add support for RHEL 9 and derivatives in install.sh
+Subject: [PATCH] Add support for RHEL 9 and derivatives in install.sh
 
 Signed-off-by: Samuel Verschelde <stormi-xcp@ylix.fr>
 ---
@@ -22,6 +22,3 @@ index 44c6f7c..ac75e0f 100755
  	sangoma*)
  	    # No additional kernel package
  	    ;;
--- 
-2.30.2
-

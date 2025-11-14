@@ -1,7 +1,7 @@
 From a64facb8a8b0d0618599cf641d5f3e2fd4575835 Mon Sep 17 00:00:00 2001
 From: =?UTF-8?q?Lo=C3=AFc=20Tosser?= <loic@kalvad.com>
 Date: Fri, 28 Jan 2022 19:11:29 +0400
-Subject: [PATCH 07/18] Fix archlinux guestmetric for ip interfaces
+Subject: [PATCH] Fix archlinux guestmetric for ip interfaces
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
@@ -24,6 +24,3 @@ index 198f8b6..3cf32ba 100644
  	for _, prefix := range vifNamePrefixList {
  		prefixPaths, err := filepath.Glob(fmt.Sprintf("/sys/class/net/%s*", prefix))
  		if err != nil {
--- 
-2.30.2
-

@@ -13,7 +13,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 13
+%define _release 14
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -57,7 +57,7 @@ Patch0: LICENSE.patch
 
 # Additional patches, created from the maintenance branch (e.g. 7.30.0-8.2)
 # Example creation command:
-# git format-patch 7.30.0-XS_with_install_sh..7.30.0-8.2
+# git format-patch 7.30.0-XS_with_install_sh..7.30.0-8.2 --no-signature --no-numbered
 
 # Patch1 to Patch10: upstream commits that didn't belong to a tag yet
 Patch1: 0001-include-vendor-directory-with-go-mod-vendor-and-have.patch
@@ -82,8 +82,8 @@ Patch17: 0017-Fix-FreePBX-detection-when-centos-release-is-missing.patch
 Patch18: 0018-Add-support-for-RHEL-9-and-derivatives-in-install.sh.patch
 Patch19: 0019-Fix-paths-in-xe-linux-distribution.service-for-XCP-n.patch
 Patch20: 0020-Update-install.sh-to-manage-two-rpm.patch
-Patch21: 0021-Fix-identification-of-blockdev-block-size.patch
-Patch22: 0022-CA-382285-Extract-Memory-Information-From-MemFree-Wh.patch
+Patch22: 0022-Fix-identification-of-blockdev-block-size.patch
+Patch23: 0023-CA-382285-Extract-Memory-Information-From-MemFree-Wh.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
@@ -272,6 +272,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Fri Nov 14 2025 Gael Duperrey <gduperrey@vates.tech> - 8.3-14 - WIP
+- Remove noise from patches using git-format-patch options
+
 * Mon Oct 13 2025 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-13
 - Add XCP-ng Windows PV drivers version 9.0.9137 Release Signed
 - Update the embedded README
