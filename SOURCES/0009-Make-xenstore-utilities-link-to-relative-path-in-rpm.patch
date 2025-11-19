@@ -1,8 +1,7 @@
 From 66217f9de0918e5d11dcd8d521729df7884d8dfa Mon Sep 17 00:00:00 2001
 From: Robin Lee <cheeselee@fedoraproject.org>
 Date: Tue, 12 Nov 2019 15:24:29 +0800
-Subject: [PATCH 09/18] Make xenstore utilities link to relative path in rpm
- and deb
+Subject: [PATCH] Make xenstore utilities link to relative path in rpm and deb
 
 This completes d2e891547e4d4a75f200a37df1ee473cd74022a3
 
@@ -58,6 +57,3 @@ index 33392bc..6189d8a 100644
  
  cp %{SOURCE9} %{buildroot}/etc/udev/rules.d/z10-xen-vcpu-hotplug.rules
  
--- 
-2.30.2
-

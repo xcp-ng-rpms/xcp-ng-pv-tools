@@ -1,7 +1,7 @@
 From d57c31a5e2d1e39c559635c5c576293a2191aae1 Mon Sep 17 00:00:00 2001
 From: mco-system <michael.costa@mcos.nc>
 Date: Sun, 13 Feb 2022 11:08:09 +1100
-Subject: [PATCH 06/18] feat: Slackware support
+Subject: [PATCH] feat: Slackware support
 
 Signed-off-by: mco-system <michael.costa@mcos.nc>
 ---
@@ -47,6 +47,3 @@ index fc9c19c..da2c100 100755
  
  
      if [ $# -eq 1 ] ; then
--- 
-2.30.2
-

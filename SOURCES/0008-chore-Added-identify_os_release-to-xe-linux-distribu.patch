@@ -1,7 +1,7 @@
 From cb202a212cb95b3553bff3f2c14f1465539304d1 Mon Sep 17 00:00:00 2001
 From: mco-system <michael.costa@mcos.nc>
 Date: Thu, 17 Feb 2022 12:16:38 +1100
-Subject: [PATCH 08/18] chore: Added identify_os_release to
+Subject: [PATCH] chore: Added identify_os_release to
  xe-linux-distribution-test + Slackware 15.0 test case via identify_os_release
 
 Signed-off-by: mco-system <michael.costa@mcos.nc>
@@ -87,6 +87,3 @@ index 58fe395..3f89631 100755
  do_test "testcases/almalinux-8.3"        "almalinux 8 3"
 +do_test "testcases/slackware-15.0"       "slackware 15 0"
  exit 0
--- 
-2.30.2
-

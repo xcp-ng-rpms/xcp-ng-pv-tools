@@ -1,7 +1,7 @@
 From a2e4c017ceb97131f6fd7e57a8cf5b4585c7918d Mon Sep 17 00:00:00 2001
 From: 4censord <mail@business-insulting.de>
 Date: Mon, 17 May 2021 12:54:16 +0200
-Subject: [PATCH 03/18] Update Building instructions for new go versions
+Subject: [PATCH] Update Building instructions for new go versions
 
 Signed-off-by: 4censord <mail@business-insulting.de>
 ---
@@ -94,6 +94,3 @@ index 9bc8a2c..de46a42 100644
 +resulting files are in `build/`, same layout as explained above
  
 -`make`
--- 
-2.30.2
-

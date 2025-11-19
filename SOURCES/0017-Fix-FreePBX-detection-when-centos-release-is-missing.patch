@@ -1,7 +1,7 @@
 From f9fa9aef719d0d1632772abad5df8df610d3b806 Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi-xcp@ylix.fr>
 Date: Thu, 20 May 2021 16:09:13 +0200
-Subject: [PATCH 17/18] Fix FreePBX detection when centos-release is missing
+Subject: [PATCH] Fix FreePBX detection when centos-release is missing
 
 For some reason, some FreePBX systems have a centos-release file and
 others don't. So we read sangoma-release first, which should always be
@@ -24,6 +24,3 @@ index 45fbb70..dcbd9b7 100755
      identify_sangoma /etc/centos-release && exit 0
      identify_freebsd && exit 0
      identify_os_release /etc/os-release && exit 0
--- 
-2.30.2
-

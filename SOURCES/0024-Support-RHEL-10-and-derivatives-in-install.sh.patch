@@ -1,0 +1,24 @@
+From 61fa1bb6e5c45fb5b185d56eff1cd2621e2df582 Mon Sep 17 00:00:00 2001
+From: Gael Duperrey <gduperrey@vates.tech>
+Date: Wed, 12 Nov 2025 17:50:31 +0100
+Subject: [PATCH] Support RHEL 10 and derivatives in install.sh
+
+Signed-off-by: Gael Duperrey <gduperrey@vates.tech>
+---
+ mk/install.sh | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/mk/install.sh b/mk/install.sh
+index 53b868b..9a409a7 100755
+--- a/mk/install.sh
++++ b/mk/install.sh
+@@ -146,6 +146,9 @@ select_pkgs_rhel()
+ 	rhel9|oracle9|centos9|rocky9|cloudlinux9|almalinux9)
+ 	    # No additional kernel package
+ 	    ;;
++	rhel10|oracle10|centos10|rocky10|cloudlinux10|almalinux10)
++	    # No additional kernel package
++	    ;;
+ 	sangoma*)
+ 	    # No additional kernel package
+ 	    ;;

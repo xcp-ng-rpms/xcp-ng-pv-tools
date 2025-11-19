@@ -1,7 +1,7 @@
 From 2961851389288f10867375b28b5238b3fa61f2ed Mon Sep 17 00:00:00 2001
 From: Samuel Verschelde <stormi@laposte.net>
 Date: Wed, 16 Oct 2019 13:04:45 +0200
-Subject: [PATCH 11/18] Add support for CloudLinux, which is based on CentOS
+Subject: [PATCH] Add support for CloudLinux, which is based on CentOS
 
 Based on https://github.com/xenserver/xe-guest-utilities/pull/72
 
@@ -61,6 +61,3 @@ index fc9c19c..b6b846d 100755
                 -e 's/^Enterprise Linux Enterprise Linux .* release \([0-9]*\)\.\([0-9]*\) (.*)$/distro=oracle;major=\1;minor=\2;/gp;' \
                 -e 's/^Enterprise Linux Enterprise Linux .* release \([0-9]*\) (.*)$/distro=oracle;major=\1/gp;' \
                 -e 's/^Oracle Linux Server release \([0-9]*\)\.\([0-9]*\)$/distro=oracle;major=\1;minor=\2/gp;' \
--- 
-2.30.2
-
