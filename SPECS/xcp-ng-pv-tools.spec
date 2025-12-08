@@ -4,6 +4,9 @@
 %define xgu_micro 0
 %define xgu_version %{xgu_major}.%{xgu_minor}.%{xgu_micro}
 
+# Inside the WinPV zip, files are packed inside a directory of the same name.
+%define winpv_version_x64 xcpng-winpv-9.1.100.0-Release-x64
+
 # xcp-ng-pv-tools is versioned after the release of XCP-ng it was made for
 # Only X.Y (eg. 8.3, not 8.3.0)
 %define xcp_ng_release 8.3
@@ -13,7 +16,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 14
+%define _release 15
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -51,7 +54,7 @@ Source15: debian-postrm
 Source16: debian-prerm
 Source17: debian-rules
 
-Source100: xcpng-winpv-9.0.9137.0-Release-x64.zip
+Source100: %{winpv_version_x64}.zip
 
 Patch0: LICENSE.patch
 
@@ -233,8 +236,8 @@ build_and_copy_deb i386
 
 # *** Build the ISO ***
 install -m 0644 %{SOURCE1} iso/README.txt
-unzip %{SOURCE100} 'package/*' -d iso/
-mv iso/package iso/Windows
+unzip %{SOURCE100} '*/package/*'
+cp -r -T %{winpv_version_x64}/package iso/Windows
 install -m 0644 versions.tgz versions.rpm versions.deb iso/Linux/
 install -m 0755 mk/install.sh \
                 mk/xe-linux-distribution \
@@ -274,6 +277,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Mon Dec 08 2025 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-15
+- Add XCP-ng Windows PV tools version 9.1.100.0 Release Signed
+
 * Fri Nov 14 2025 Gael Duperrey <gduperrey@vates.tech> - 8.3-14
 - Remove noise from patches using git-format-patch options
 - Add patch to remove the invitation to reboot after install of the tools
