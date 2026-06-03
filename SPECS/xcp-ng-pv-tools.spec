@@ -6,7 +6,7 @@
 
 # Origin: https://github.com/xcp-ng/win-pv-drivers/releases
 # Inside the WinPV zip, files are packed inside a directory of the same name.
-%define winpv_version_x64 xcpng-winpv-9.1.146.0-fix-VSA-2026-012-Release-x64
+%define winpv_version_x64 xcpng-winpv-9.1.200.0-Release-x64
 
 # xcp-ng-pv-tools is versioned after the release of XCP-ng it was made for
 # Only X.Y (eg. 8.3, not 8.3.0)
@@ -17,7 +17,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 17
+%define _release 18
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -278,6 +278,9 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Wed Jun 03 2026 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-18
+- Add XCP-ng Windows PV tools version 9.1.200.0 Release
+
 * Wed Apr 29 2026 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-17
 - Update WinPV ISO with XenClean and XenBootFix 9.1.152, fixes VSA-2026-012
 
