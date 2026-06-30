@@ -173,7 +173,7 @@ function build_and_copy_deb {
     cp ../../build/obj/{xe-daemon,xenstore} .
     cp ../../LICENSE .
     cp ../../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} .
-    fakeroot dpkg-buildpackage -us -uc -a $ARCH
+    fakeroot dpkg-buildpackage -us -uc -b -a $ARCH
     popd
 
     # Copy Deb
