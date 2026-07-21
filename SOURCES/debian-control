@@ -1,7 +1,7 @@
 Source: xe-guest-utilities
 Section: main/admin
 Priority: optional
-Maintainer: XCP-ng <xcp-ng.org>
+Maintainer: XCP-ng <contact@xcp-ng.org>
 Standards-Version: 3.7.2
 Homepage: https://github.com/xcp-ng/xe-guest-utilities
 
