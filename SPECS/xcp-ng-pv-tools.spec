@@ -93,7 +93,7 @@ Patch24: 0024-Support-RHEL-10-and-derivatives-in-install.sh.patch
 BuildArch: noarch
 BuildRequires: genisoimage
 BuildRequires: golang
-BuildRequires: golang-github-golang-sys-devel
+BuildRequires: golang-x-sys-devel
 BuildRequires: dpkg-dev
 BuildRequires: fakeroot
 
