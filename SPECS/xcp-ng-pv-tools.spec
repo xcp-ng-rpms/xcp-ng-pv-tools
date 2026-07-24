@@ -239,12 +239,14 @@ build_and_copy_deb i386
 install -m 0644 %{SOURCE1} iso/README.txt
 unzip %{SOURCE100} '*/package/*'
 cp -r -T %{winpv_version_x64}/package iso/Windows
-install -m 0644 versions.tgz versions.rpm versions.deb iso/Linux/
-install -m 0755 mk/install.sh \
-                mk/xe-linux-distribution \
+install -m 0644 versions.tgz \
+                versions.rpm \
+                versions.deb \
                 mk/xe-linux-distribution.service \
                 mk/xen-vcpu-hotplug.rules \
-                LICENSE \
+                LICENSE
+install -m 0755 mk/install.sh \
+                mk/xe-linux-distribution \
                 iso/Linux/
 
 genisoimage -joliet -joliet-long -r \
