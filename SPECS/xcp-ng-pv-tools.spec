@@ -183,7 +183,7 @@ function build_and_copy_deb {
     cp ../../build/obj/{xe-daemon,xenstore} .
     cp ../../LICENSE .
     cp ../../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} .
-    dpkg-buildpackage -us -uc -a $ARCH
+    fakeroot dpkg-buildpackage -us -uc -a $ARCH
     popd
 
     # Copy Deb
@@ -282,6 +282,7 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 %changelog
 * Wed Oct 14 2026 Julian Vetter <julian.vetter@vates.tech> - 8.3-20
 - BuildRequires golang-x-sys-devel instead of golang-github-golang-sys-devel
+- Run dpkg-buildpackage under fakeroot for the Debian package build
 
 * Tue Sep 22 2026 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-19
 - Add XCP-ng Windows Guest Tools version 9.2.385
