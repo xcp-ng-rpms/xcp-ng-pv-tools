@@ -1,0 +1,43 @@
+From 6813439067f72897dc657248977541315b68f090 Mon Sep 17 00:00:00 2001
+From: Julian Vetter <julian.vetter@vates.tech>
+Date: Fri, 4 Sep 2026 12:00:00 +0200
+Subject: [PATCH] Bump Go language level to build against system x/sys
+
+The RPM build discards the vendored golang.org/x/sys and points the
+vendor directory at the system golang-x-sys-devel package. On AlmaLinux
+10 that is x/sys >= 0.26, whose sources use features that need go1.17+.
+
+The build still forced the go1.16 language level from two places:
+- go.mod declares "go 1.16".
+- vendor/modules.txt carries no per-module "go" annotation, so it falls
+  back to go1.16 for that module, ignoring go.mod.
+
+So, bump the go version to 1.21, so xenstore compiles again.
+
+Signed-off-by: Julian Vetter <julian.vetter@vates.tech>
+---
+ go.mod             | 2 +-
+ vendor/modules.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/go.mod b/go.mod
+index 272fdf6..2648338 100644
+--- a/go.mod
++++ b/go.mod
+@@ -1,5 +1,5 @@
+ module github.com/xenserver/xe-guest-utilities
+ 
+-go 1.16
++go 1.21
+ 
+ require golang.org/x/sys v0.0.0-20210414055047-fe65e336abe0
+diff --git a/vendor/modules.txt b/vendor/modules.txt
+index c77a673..0169adf 100644
+--- a/vendor/modules.txt
++++ b/vendor/modules.txt
+@@ -1,4 +1,4 @@
+ # golang.org/x/sys v0.0.0-20210414055047-fe65e336abe0
+-## explicit
++## explicit; go 1.21
+ golang.org/x/sys/internal/unsafeheader
+ golang.org/x/sys/unix
