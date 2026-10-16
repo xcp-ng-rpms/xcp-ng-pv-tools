@@ -17,7 +17,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 19
+%define _release 20
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -91,11 +91,12 @@ Patch21: 0021-Remove-You-should-now-reboot-this-Virtual-Machine.-m.patch
 Patch22: 0022-Fix-identification-of-blockdev-block-size.patch
 Patch23: 0023-CA-382285-Extract-Memory-Information-From-MemFree-Wh.patch
 Patch24: 0024-Support-RHEL-10-and-derivatives-in-install.sh.patch
+Patch25: 0025-Bump-Go-language-level-to-build-against-system-x-sys.patch
 
 BuildArch: noarch
 BuildRequires: genisoimage
 BuildRequires: golang
-BuildRequires: golang-github-golang-sys-devel
+BuildRequires: golang-x-sys-devel
 BuildRequires: dpkg-dev
 BuildRequires: fakeroot
 
@@ -183,7 +184,7 @@ function build_and_copy_deb {
     cp ../../build/obj/{xe-daemon,xenstore} .
     cp ../../LICENSE .
     cp ../../mk/{xe-linux-distribution,xe-linux-distribution.init,xen-vcpu-hotplug.rules} .
-    dpkg-buildpackage -us -uc -a $ARCH
+    fakeroot dpkg-buildpackage -us -uc -a $ARCH
     popd
 
     # Copy Deb
@@ -280,6 +281,11 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Wed Oct 14 2026 Julian Vetter <julian.vetter@vates.tech> - 8.3-20
+- BuildRequires golang-x-sys-devel instead of golang-github-golang-sys-devel
+- Run dpkg-buildpackage under fakeroot for the Debian package build
+- Bump Go language level so xenstore builds against the system x/sys
+
 * Tue Sep 22 2026 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-19
 - Add XCP-ng Windows Guest Tools version 9.2.385
 - Add Windows Guest Tools 9.2.351 Hotfix
