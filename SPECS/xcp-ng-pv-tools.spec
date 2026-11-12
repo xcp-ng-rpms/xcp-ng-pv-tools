@@ -6,7 +6,7 @@
 
 # Origin: https://github.com/xcp-ng/win-pv-drivers/releases
 # Inside the WinPV zip, files are packed inside a directory of the same name.
-%define winpv_version_x64 xcpng-winpv-9.2.385.0-Release-x64
+%define winpv_version_x64 xcpng-winpv-9.2.445.0-Release-x64
 
 # xcp-ng-pv-tools is versioned after the release of XCP-ng it was made for
 # Only X.Y (eg. 8.3, not 8.3.0)
@@ -17,7 +17,7 @@ Version: %{xcp_ng_release}
 # xe-guest-utilies is versioned after the RPM release, so we need to keep it upwards,
 # without reinitializing it to 1 when the RPM version changes.
 # Try to keep this in sync with other XCP-ng releases.
-%define _release 19
+%define _release 21
 Release: %{_release}%{?dist}
 
 # The xe-guest-utilities release is the xcp-ng-pv-tools release
@@ -56,7 +56,6 @@ Source16: debian-prerm
 Source17: debian-rules
 
 Source100: %{winpv_version_x64}.zip
-Source101: XenTools-fix-9.2.351.msp
 
 Patch0: LICENSE.patch
 
@@ -240,7 +239,6 @@ build_and_copy_deb i386
 install -m 0644 %{SOURCE1} iso/README.txt
 unzip %{SOURCE100} '*/package/*'
 cp -r -T %{winpv_version_x64}/package iso/Windows
-cp %{SOURCE101} iso/Windows/
 install -m 0644 versions.tgz versions.rpm versions.deb iso/Linux/
 install -m 0755 mk/install.sh \
                 mk/xe-linux-distribution \
@@ -280,6 +278,10 @@ install -D -m755 %{SOURCE3} %{buildroot}/opt/xensource/libexec/unmount_xstools.s
 /opt/xensource/libexec/unmount_xstools.sh
 
 %changelog
+* Thu Nov 12 2026 Cesaire Mounah <cesaire.mounah@vates.tech> - 8.3-21
+- Add XCP-ng Windows PV tools version 9.2.445.0 Release
+- Remove Windows Guest Tools 9.2.351 Hotfix
+
 * Tue Sep 22 2026 Tu Dinh <ngoc-tu.dinh@vates.tech> - 8.3-19
 - Add XCP-ng Windows Guest Tools version 9.2.385
 - Add Windows Guest Tools 9.2.351 Hotfix
